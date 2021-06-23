@@ -1,5 +1,6 @@
-# Exam #1234: "Exam Title"
-## Student: s123456 LASTNAME FIRSTNAME 
+# Exam #2: "Meme Generator"
+
+## Student: s281564 MANCO MARCO
 
 ## React Client Application Routes
 
@@ -12,19 +13,28 @@
 - POST `/api/login`
   - request parameters and request body content
   - response body content
-- GET `/api/something`
-  - request parameters
-  - response body content
-- POST `/api/something`
-  - request parameters and request body content
-  - response body content
-- ...
+- GET `/api/memes`
+  - Method: GET
+  - Request body: None.
+  - Response: 200 OK (success) or 500 Internal Server Error (generic error).content.
+  - Response body: An array of objects, each describing a meme.
+- GET `/api/memes/public`
+  - Method: GET
+  - Request body: None.
+  - Response: 200 OK (success) or 500 Internal Server Error (generic error).content.
+  - Response body: An array of objects, each describing a public meme.
+- POST `/api/img/:id`
+  - Method: GET
+  - Request body: None.
+  - Response: 200 OK (success) or 500 Internal Server Error (generic error).content.
+  - Response body: Image requested.
 
 ## Database Tables
 
-- Table `users` - contains xx yy zz
-- Table `something` - contains ww qq ss
-- ...
+- Table `users` - contains id email name hash
+- Table `memes` - contains id title texttop textcenter textbottom img private user copy font color
+- Table `images` - contains id path top center bottom
+- Table `fonts` - contains id family
 
 ## Main React Components
 
@@ -40,5 +50,6 @@
 
 ## Users Credentials
 
-- username, password (plus any other requested info)
-- username, password (plus any other requested info)
+- montemagno@studenti.polito.it, pirupiru (name: Montemagno)
+- manco@studenti.polito.it, 123stella (name: Marco)
+- versace@studenti.polito.it, medusa (name: Donatella)
