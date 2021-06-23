@@ -69,7 +69,7 @@ app.use(passport.session());
 /*** Meme APIs ***/
 
 // GET /api/memes
-app.get("/api/memes", async (req, res) => {
+app.get("/api/memes", isLoggedIn, async (req, res) => {
   // FIXME: add middleware auth
   try {
     const memes = await memeDao.listMemes();
@@ -89,7 +89,7 @@ app.get("/api/memes/public", async (req, res) => {
 });
 
 // GET /api/imgs/<id>
-app.get("/api/imgs/:id", async (req, res) => {
+app.get("/api/imgs/:id", isLoggedIn, async (req, res) => {
   try {
     const img = await memeDao.getImage(req.params.id);
     if (img.error) res.status(404).json(result);
@@ -100,7 +100,7 @@ app.get("/api/imgs/:id", async (req, res) => {
 });
 
 // GET /api/info/imgs/<id>
-app.get("/api/info/imgs/:id", async (req, res) => {
+app.get("/api/info/imgs/:id", isLoggedIn, async (req, res) => {
   try {
     const img = await memeDao.getImageInfo(req.params.id);
     if (img.error) res.status(404).json(result);
@@ -111,7 +111,7 @@ app.get("/api/info/imgs/:id", async (req, res) => {
 });
 
 // GET /api/info/imgs/
-app.get("/api/info/imgs/", async (req, res) => {
+app.get("/api/info/imgs/", isLoggedIn, async (req, res) => {
   try {
     const imgs = await memeDao.getImagesInfo();
     res.json(imgs);
