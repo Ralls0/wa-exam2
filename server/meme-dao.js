@@ -6,7 +6,7 @@ const { db } = require("./db");
 // get all memes
 exports.listMemes = () => {
   return new Promise((resolve, reject) => {
-    const sql = "SELECT * FROM memes";
+    const sql = "SELECT m.id, m.title, m.texttop, m.textcenter, m.textbottom, m.img, m.private, u.name AS user, m.copy, f.family AS font, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id";
     db.all(sql, [], (err, rows) => {
       if (err) {
         reject(err);
@@ -33,7 +33,7 @@ exports.listMemes = () => {
 // get all public memes
 exports.listPublicMemes = () => {
   return new Promise((resolve, reject) => {
-    const sql = "SELECT * FROM memes WHERE private = 0";
+    const sql = "SELECT m.id, m.title, m.texttop, m.textcenter, m.textbottom, m.img, m.private, u.name AS user, m.copy, f.family AS font, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id AND m.private = 0";
     db.all(sql, [], (err, rows) => {
       if (err) {
         reject(err);

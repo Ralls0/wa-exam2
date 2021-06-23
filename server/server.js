@@ -70,7 +70,6 @@ app.use(passport.session());
 
 // GET /api/memes
 app.get("/api/memes", isLoggedIn, async (req, res) => {
-  // FIXME: add middleware auth
   try {
     const memes = await memeDao.listMemes();
     res.json(memes);
