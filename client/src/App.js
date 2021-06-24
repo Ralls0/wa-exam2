@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from "react";
-//import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 import "./App.css";
 import API from "./API";
 import NavigationBar from "./components/NavBar/Navbar";
-// import { LoggedInMode } from "./createContexts";
+import { LoggedInMode, UserInfoMode } from "./createContexts";
 
-// import logo from './img/logo.png'; FIXME:  rimuovimi
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#D153FF",
+    },
+    secondary: {
+      main: "#98CC6D",
+    },
+    error: {
+      main: "#C1442A",
+    },
+  },
+});
 
 function App() {
   const [dirty, setDirty] = useState(true);
@@ -60,7 +79,7 @@ function App() {
     setDirty(true);
   }; */
 
-  /* const doLogIn = async (credentials) => {
+  const performLogIn = async (credentials) => {
     try {
       const user = await API.logIn(credentials);
       setLoggedIn(true);
@@ -69,19 +88,31 @@ function App() {
     } catch (err) {
       throw err;
     }
-  }; */
+  };
 
-  /* const doLogOut = async () => {
+  const doLogIn = () => {
+    return (<Redirect to="/loing" />);
+  };
+
+  const doLogOut = async () => {
     await API.logOut();
     setLoggedIn(false);
     localStorage.clear();
-    // setMemes([]);
-  }; */
+    setMemes([]);
+  };
 
   return (
-    <header className="App">
-      <NavigationBar />
-    </header>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <header className="App">
+          <LoggedInMode.Provider value={loggedIn}>
+            <UserInfoMode.Provider value={userInfo}>
+              <NavigationBar doLogIn={doLogIn} doLogOut={doLogOut} />
+            </UserInfoMode.Provider>
+          </LoggedInMode.Provider>
+        </header>
+      </ThemeProvider>
+    </Router>
   );
 }
 

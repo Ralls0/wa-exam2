@@ -202,14 +202,4 @@ function LoginFormPage(props) {
   );
 }
 
-function LogButton(props) {
-  return (
-    <Grid item xs>
-      <Button variant="outline-primary" onClick={props.logout}>
-        {props.text}
-      </Button>
-    </Grid>
-  );
-}
-
-export { LoginFormPage, LogButton };
+export { LoginFormPage };
