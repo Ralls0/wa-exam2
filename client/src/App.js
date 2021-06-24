@@ -1,15 +1,12 @@
+import "./App.css";
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
-import "./App.css";
 import API from "./API";
 import NavigationBar from "./components/NavBar/Navbar";
+import { Login } from "./components/Login/Login";
+import { MainContent } from "./components/MainContent/MainContent";
 import { LoggedInMode, UserInfoMode } from "./createContexts";
 
 const theme = createMuiTheme({
@@ -21,8 +18,11 @@ const theme = createMuiTheme({
       main: "#98CC6D",
     },
     error: {
-      main: "#C1442A",
+      main: "#E81f1f",
     },
+  },
+  typography: {
+    fontFamily: "Impact, Arial",
   },
 });
 
@@ -32,6 +32,13 @@ function App() {
   const [message, setMessage] = useState("");
   const [userInfo, setUserInfo] = useState({});
   const [memes, setMemes] = useState([]);
+  const [menu, setMenu] = useState("/");
+
+  const handleMenu = (path) => {
+    setMenu(path);
+  };
+
+  console.log(dirty, message, memes); // FIXME: remove
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -66,6 +73,7 @@ function App() {
       });
       console.error(err);
     });
+    console.log("MEME", memes);
   }, [loggedIn]);
 
   /* const handleErrors = (err) => {
@@ -79,7 +87,7 @@ function App() {
     setDirty(true);
   }; */
 
-  const performLogIn = async (credentials) => {
+  const doLogIn = async (credentials) => {
     try {
       const user = await API.logIn(credentials);
       setLoggedIn(true);
@@ -90,10 +98,6 @@ function App() {
     }
   };
 
-  const doLogIn = () => {
-    return (<Redirect to="/loing" />);
-  };
-
   const doLogOut = async () => {
     await API.logOut();
     setLoggedIn(false);
@@ -102,17 +106,47 @@ function App() {
   };
 
   return (
-    <Router>
+    <div className="App">
       <ThemeProvider theme={theme}>
-        <header className="App">
-          <LoggedInMode.Provider value={loggedIn}>
-            <UserInfoMode.Provider value={userInfo}>
-              <NavigationBar doLogIn={doLogIn} doLogOut={doLogOut} />
-            </UserInfoMode.Provider>
-          </LoggedInMode.Provider>
-        </header>
+        <LoggedInMode.Provider value={loggedIn}>
+          <UserInfoMode.Provider value={userInfo}>
+            <NavigationBar
+              doLogIn={doLogIn}
+              doLogOut={doLogOut}
+              menu={menu}
+              handleMenu={handleMenu}
+            />
+          </UserInfoMode.Provider>
+        </LoggedInMode.Provider>
+        <Router>
+          <Switch>
+            <Route
+              path="/login"
+              render={() => (
+                <>
+                  {loggedIn ? (
+                    <Redirect to="/" />
+                  ) : (
+                    <>
+                      <Login doLogIn={doLogIn} />
+                    </>
+                  )}
+                </>
+              )}
+            />
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <>
+                  <MainContent memes={memes} />
+                </>
+              )}
+            />
+          </Switch>
+        </Router>
       </ThemeProvider>
-    </Router>
+    </div>
   );
 }
 

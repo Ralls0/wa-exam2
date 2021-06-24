@@ -24,6 +24,17 @@ async function getPublicMemes() {
   }
 }
 
+async function getImg(id) {
+  // call: GET /api/img/:id
+  const response = await fetch(BASEURL + `/img/${id}`);
+  const imgJson = await response.json();
+  if (response.ok) {
+    return imgJson;
+  } else {
+    throw imgJson; // an object with the error coming from the server
+  }
+}
+
 async function logIn(credentials) {
   let response = await fetch("/api/sessions", {
     method: "POST",
@@ -62,6 +73,7 @@ async function getUserInfo() {
 const API = {
   getAllMemes,
   getPublicMemes,
+  getImg,
   logIn,
   logOut,
   getUserInfo,

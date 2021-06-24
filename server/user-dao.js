@@ -1,7 +1,6 @@
 'use strict';
-/* Data Access Object (DAO) module for accessing users */
 
-const db = require('./db');
+const { db } = require('./db');
 const bcrypt = require('bcrypt');
 
 exports.getUserById = (id) => {
@@ -31,8 +30,7 @@ exports.getUser = (email, password) => {
         }
         else {
           const user = {id: row.id, username: row.email, name: row.name};
-            
-          bcrypt.compare(password, row.password).then(result => {
+          bcrypt.compare(password, row.hash).then(result => {
             if(result)
               resolve(user);
             else
