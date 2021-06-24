@@ -88,7 +88,7 @@ app.get("/api/memes/public", async (req, res) => {
 });
 
 // GET /api/imgs/<id>
-app.get("/api/imgs/:id", isLoggedIn, async (req, res) => {
+app.get("/api/imgs/:id", async (req, res) => {
   try {
     const img = await memeDao.getImage(req.params.id);
     if (img.error) res.status(404).json(result);
