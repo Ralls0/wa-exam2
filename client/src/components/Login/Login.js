@@ -192,10 +192,10 @@ function LoginForm(props) {
             initial={{ x: "-100vw" }}
             animate={{ x: 0 }}
             transition={{
-              delay: 1.5,
+              delay: 0.6,
               type: "spring",
               stiffness: 50,
-              duration: 1.5,
+              duration: 0.6,
             }}
           >
             <Button

@@ -1,6 +1,4 @@
-.App {
-  min-height: 100vh;
-  text-align: center;
+html,
+body{
   background-color: #2C223F;
-  font-size: calc(10px + 2vmin);
 }

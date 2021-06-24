@@ -1,6 +1,11 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import API from "./API";
@@ -16,9 +21,13 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: "#98CC6D",
+      dark: "#6F9D58",
     },
     error: {
       main: "#E81f1f",
+    },
+    info: {
+      main: "#0BCBFF",
     },
   },
   typography: {
@@ -37,8 +46,6 @@ function App() {
   const handleMenu = (path) => {
     setMenu(path);
   };
-
-  console.log(dirty, message, memes); // FIXME: remove
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -59,13 +66,12 @@ function App() {
       if (loggedIn) {
         const ms = await API.getAllMemes();
         setMemes(ms);
-        setDirty(true);
       } else {
         const ms = await API.getPublicMemes();
         setMemes(ms);
-        setDirty(true); // FIXME: remove se non necessario
       }
     };
+    setDirty(true);
     getMemes().catch((err) => {
       setMessage({
         msg: "Impossible to load memes! Please, try again later...",
@@ -73,8 +79,27 @@ function App() {
       });
       console.error(err);
     });
-    console.log("MEME", memes);
-  }, [loggedIn]);
+  }, [loggedIn, memes.length]);
+
+  useEffect(() => {
+    const getImg = async (id) => {
+      const img = await API.getImage(id);
+      console.log(img);
+      return img;
+    };
+
+    if (dirty) {
+      let newMeme = []
+      memes.forEach((meme) => {
+        console.log(meme.id);
+
+        newMeme.push({...meme, img: getImg(meme.id)})
+        
+        console.log(newMeme.img);
+      });
+    }
+    setDirty(false);
+  }, [dirty, memes]);
 
   /* const handleErrors = (err) => {
     if (err.errors)
@@ -106,7 +131,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div>
       <ThemeProvider theme={theme}>
         <LoggedInMode.Provider value={loggedIn}>
           <UserInfoMode.Provider value={userInfo}>

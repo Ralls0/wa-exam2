@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: "#2C223F",
-    boxShadow: 'none'
+    boxShadow: "none",
   },
   text: {
     fontFamily: "Impact",
@@ -31,13 +31,6 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "150px",
   },
 }));
-
-/**
- *
- * TODO :
- * - [ ] aggiundere stato menu per il bordo
- * - [ ] spostare makestyle in un file a parte
- */
 
 export default function NavigationBar(props) {
   const loggedin = useContext(LoggedInMode);
@@ -64,9 +57,15 @@ export default function NavigationBar(props) {
                 spacing={3}
               >
                 <Grid item>
-                  <img src={logo} alt="logo" className={classes.logo} />
+                  <motion.div
+                    initial={{ x: "-100vw" }}
+                    animate={{ x: 0 }}
+                    transition={{ type: "spring", stiffness: 50 }}
+                  >
+                    <img src={logo} alt="logo" className={classes.logo} />
+                  </motion.div>
                 </Grid>
-                <Menu menu={props.menu}  handleMenu={props.handleMenu}/>
+                <Menu menu={props.menu} handleMenu={props.handleMenu} />
               </Grid>
             </Grid>
             <Grid item>
@@ -104,7 +103,7 @@ export default function NavigationBar(props) {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={() => props.handleMenu('/login')}
+                        onClick={() => props.handleMenu("/login")}
                       >
                         Login
                       </Button>
