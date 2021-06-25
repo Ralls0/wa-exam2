@@ -13,14 +13,12 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "70vh",
     borderRadius: "25px",
     listStyle: "none",
-    overflow: "hidden",
+    overflow: "scroll",
   },
 }));
 
 function MainContent(props) {
-  
   const classes = useStyles();
-
   return (
     <Grid container justify="center" alignItems="center">
       <Grid item>
@@ -44,7 +42,7 @@ function MainContent(props) {
               >
                 {props.memes &&
                   props.memes.map((meme) => (
-                    <CardMeme key={meme.id} meme={meme} />
+                    <CardMeme key={meme.id} meme={meme} img={meme.img} />
                   ))}
               </motion.div>
             </AnimateSharedLayout>

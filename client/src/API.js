@@ -1,4 +1,5 @@
 import Meme from "./components/models/memes/memes";
+import Img from "./components/models/imgs/imgs";
 
 const BASEURL = "/api";
 
@@ -24,12 +25,27 @@ async function getPublicMemes() {
   }
 }
 
+async function getInfoImages() {
+  // call: GET /api/info/imgs/
+  const response = await fetch(BASEURL + "/info/imgs/");
+  const imgsJson = await response.json();
+  if (response.ok) {
+    for(let img of imgsJson) {
+      img['img'] = await getImage(img.id).catch((err) => {throw err});
+    }
+    
+    return imgsJson.map((img) => Img.from(img));
+  } else {
+    throw imgsJson; // an object with the error coming from the server
+  }
+}
+
 async function getImage(id) {
   // call: GET /api/img/:id
-  const response = await fetch(BASEURL + `/img/${id}`);
-  const imgJson = await response.json();
+  const response = await fetch(BASEURL + `/imgs/${id}`);
+  const imgJson = await response.blob();
   if (response.ok) {
-    return imgJson;
+    return URL.createObjectURL(imgJson);
   } else {
     throw imgJson; // an object with the error coming from the server
   }
@@ -73,6 +89,7 @@ async function getUserInfo() {
 const API = {
   getAllMemes,
   getPublicMemes,
+  getInfoImages,
   getImage,
   logIn,
   logOut,

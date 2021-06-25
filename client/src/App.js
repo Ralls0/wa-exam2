@@ -12,7 +12,7 @@ import API from "./API";
 import NavigationBar from "./components/NavBar/Navbar";
 import { Login } from "./components/Login/Login";
 import { MainContent } from "./components/MainContent/MainContent";
-import { LoggedInMode, UserInfoMode } from "./createContexts";
+import { LoggedInMode, UserInfoMode, MemeImages } from "./createContexts";
 
 const theme = createMuiTheme({
   palette: {
@@ -41,6 +41,7 @@ function App() {
   const [message, setMessage] = useState("");
   const [userInfo, setUserInfo] = useState({});
   const [memes, setMemes] = useState([]);
+  const [imgs, setImgs] = useState([]);
   const [menu, setMenu] = useState("/");
 
   const handleMenu = (path) => {
@@ -48,17 +49,20 @@ function App() {
   };
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const user = await API.getUserInfo();
-        setUserInfo(user);
-        setLoggedIn(true);
-        setDirty(true);
-      } catch (err) {
-        console.error(err.error);
-      }
-    };
-    checkAuth();
+    if (loggedIn) {
+      const checkAuth = async () => {
+        try {
+          const user = await API.getUserInfo();
+          setUserInfo(user);
+          setLoggedIn(true);
+          setDirty(true);
+        } catch (err) {
+          handleErrors(err.error);
+          console.error(err.error);
+        }
+      };
+      checkAuth();
+    }
   }, [loggedIn]);
 
   useEffect(() => {
@@ -71,37 +75,49 @@ function App() {
         setMemes(ms);
       }
     };
-    setDirty(true);
+    const getAllImg = async () => {
+      const is = await API.getInfoImages();
+      setImgs(is);
+    };
+
+    getAllImg().catch((err) => {
+      setMessage({
+        msg: "Impossible to load imgs! Please, try again later...",
+        type: "danger",
+      });
+      handleErrors(err);
+      console.error(err);
+    });
+
     getMemes().catch((err) => {
       setMessage({
         msg: "Impossible to load memes! Please, try again later...",
         type: "danger",
       });
+      handleErrors(err);
       console.error(err);
     });
   }, [loggedIn, memes.length]);
 
-  useEffect(() => {
-    const getImg = async (id) => {
-      const img = await API.getImage(id);
-      console.log(img);
-      return img;
-    };
-
+/*   useEffect(() => {
     if (dirty) {
-      let newMeme = []
-      memes.forEach((meme) => {
-        console.log(meme.id);
-
-        newMeme.push({...meme, img: getImg(meme.id)})
-        
-        console.log(newMeme.img);
+      const getAllImg = async () => {
+        const is = await API.getInfoImages();
+        setImgs(is);
+      };
+      setDirty(false);
+      getAllImg().catch((err) => {
+        setMessage({
+          msg: "Impossible to load imgs! Please, try again later...",
+          type: "danger",
+        });
+        handleErrors(err);
+        console.error(err);
       });
     }
-    setDirty(false);
-  }, [dirty, memes]);
+  }, [dirty]); */
 
-  /* const handleErrors = (err) => {
+  const handleErrors = (err) => {
     if (err.errors)
       setMessage({
         msg: err.errors[0].msg + ": " + err.errors[0].param,
@@ -110,7 +126,7 @@ function App() {
     else setMessage({ msg: err.error, type: "danger" });
 
     setDirty(true);
-  }; */
+  };
 
   const doLogIn = async (credentials) => {
     try {
@@ -143,33 +159,35 @@ function App() {
             />
           </UserInfoMode.Provider>
         </LoggedInMode.Provider>
-        <Router>
-          <Switch>
-            <Route
-              path="/login"
-              render={() => (
-                <>
-                  {loggedIn ? (
-                    <Redirect to="/" />
-                  ) : (
-                    <>
-                      <Login doLogIn={doLogIn} />
-                    </>
-                  )}
-                </>
-              )}
-            />
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <>
-                  <MainContent memes={memes} />
-                </>
-              )}
-            />
-          </Switch>
-        </Router>
+        <MemeImages.Provider value={imgs}>
+          <Router>
+            <Switch>
+              <Route
+                path="/login"
+                render={() => (
+                  <>
+                    {loggedIn ? (
+                      <Redirect to="/" />
+                    ) : (
+                      <>
+                        <Login doLogIn={doLogIn} />
+                      </>
+                    )}
+                  </>
+                )}
+              />
+              <Route
+                exact
+                path="/"
+                render={() => (
+                  <>
+                    <MainContent memes={memes} />
+                  </>
+                )}
+              />
+            </Switch>
+          </Router>
+        </MemeImages.Provider>
       </ThemeProvider>
     </div>
   );

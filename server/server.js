@@ -99,7 +99,7 @@ app.get("/api/imgs/:id", async (req, res) => {
 });
 
 // GET /api/info/imgs/<id>
-app.get("/api/info/imgs/:id", isLoggedIn, async (req, res) => {
+app.get("/api/info/imgs/:id", async (req, res) => {
   try {
     const img = await memeDao.getImageInfo(req.params.id);
     if (img.error) res.status(404).json(result);
@@ -110,7 +110,7 @@ app.get("/api/info/imgs/:id", isLoggedIn, async (req, res) => {
 });
 
 // GET /api/info/imgs/
-app.get("/api/info/imgs/", isLoggedIn, async (req, res) => {
+app.get("/api/info/imgs/", async (req, res) => {
   try {
     const imgs = await memeDao.getImagesInfo();
     res.json(imgs);

@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { motion, AnimatePresence } from "framer-motion";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import LockIcon from '@material-ui/icons/Lock';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import CallSplitSharpIcon from '@material-ui/icons/CallSplitSharp';
+import LockIcon from "@material-ui/icons/Lock";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import CallSplitSharpIcon from "@material-ui/icons/CallSplitSharp";
+import { MemeImages } from "../../createContexts";
 import "./styles.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,14 +45,25 @@ const useStyles = makeStyles((theme) => ({
   },
   open: {
     color: "#6F9D58",
-  }
-
+  },
 }));
 
 function CardMeme(props) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [img, setImg] = useState("");
+  const imgs = useContext(MemeImages);
   const classes = useStyles();
+  useEffect(() => {
+    if (imgs.length > 0) {
+      setLoading(true);
+      let i = imgs.filter((image) => {
+        return image.id === props.img;
+      })[0].img;
+      setImg(i);
+      setLoading(false);
+    }
+  }, [imgs, imgs.length, props.img]);
 
   const toggleOpen = () => setIsOpen((oldIsOpen) => !isOpen);
 
@@ -88,22 +100,31 @@ function CardMeme(props) {
               >
                 By: {props.meme.user}
               </Typography>
-              </Grid>
-              <Grid item>
-              {props.meme.private ? (<LockIcon color="error" />) : (<LockOpenIcon color="secondary" />)}
             </Grid>
-              <Grid item>
-              {props.meme.copy && (<CallSplitSharpIcon className={classes.copy} />)}
+            <Grid item>
+              {props.meme.private ? (
+                <LockIcon color="error" />
+              ) : (
+                <LockOpenIcon color="secondary" />
+              )}
+            </Grid>
+            <Grid item>
+              {props.meme.copy && (
+                <CallSplitSharpIcon className={classes.copy} />
+              )}
             </Grid>
           </Grid>
         </Grid>
-        <AnimatePresence>{isOpen && <Content />}</AnimatePresence>
+        <AnimatePresence>
+          {isOpen && <Content img={img} title={props.meme.title} />}
+        </AnimatePresence>
       </CardContent>
     </Card>
   );
 }
 
 function Content(props) {
+  console.log("contnet: ",props.img);
   return (
     <motion.div
       layout
@@ -114,6 +135,7 @@ function Content(props) {
       <div className="row" />
       <div className="row" />
       <div className="row" />
+      <img src={props.img} alt={props.title} height="450px" width="450px" styles={{maxWidth: "450px", maxHeight: "450px"}} />
     </motion.div>
   );
 }
