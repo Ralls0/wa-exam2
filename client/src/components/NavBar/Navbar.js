@@ -1,36 +1,15 @@
 import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { LoggedInMode, UserInfoMode } from "../../createContexts";
 import { Menu } from "./menu/Menu";
 import logo from "../../img/logo.png";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: "#2C223F",
-    boxShadow: "none",
-  },
-  text: {
-    fontFamily: "Impact",
-    textDecoration: "none",
-    flexGrow: 1,
-    color: "#98CC6D",
-  },
-  link: {
-    textDecoration: "none",
-  },
-  logo: {
-    maxWidth: "150px",
-    maxHeight: "150px",
-  },
-}));
+import { useStyles } from "./styles";
 
 export default function NavigationBar(props) {
   const loggedin = useContext(LoggedInMode);
@@ -98,7 +77,6 @@ export default function NavigationBar(props) {
                     </Grid>
                   </Grid>
                 ) : (
-                  <Router>
                     <Link to="/login" className={classes.link}>
                       <Button
                         variant="outlined"
@@ -108,7 +86,6 @@ export default function NavigationBar(props) {
                         Login
                       </Button>
                     </Link>
-                  </Router>
                 )}
               </motion.div>
             </Grid>

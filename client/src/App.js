@@ -1,7 +1,9 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter
+} from "react-router-dom";
+import {
   Route,
   Switch,
   Redirect,
@@ -99,7 +101,7 @@ function App() {
     });
   }, [loggedIn, memes.length]);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     if (dirty) {
       const getAllImg = async () => {
         const is = await API.getInfoImages();
@@ -147,49 +149,32 @@ function App() {
   };
 
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <LoggedInMode.Provider value={loggedIn}>
-          <UserInfoMode.Provider value={userInfo}>
-            <NavigationBar
-              doLogIn={doLogIn}
-              doLogOut={doLogOut}
-              menu={menu}
-              handleMenu={handleMenu}
-            />
-          </UserInfoMode.Provider>
-        </LoggedInMode.Provider>
-        <MemeImages.Provider value={imgs}>
-          <Router>
-            <Switch>
-              <Route
-                path="/login"
-                render={() => (
-                  <>
-                    {loggedIn ? (
-                      <Redirect to="/" />
-                    ) : (
-                      <>
-                        <Login doLogIn={doLogIn} />
-                      </>
-                    )}
-                  </>
-                )}
-              />
-              <Route
-                exact
-                path="/"
-                render={() => (
-                  <>
-                    <MainContent memes={memes} />
-                  </>
-                )}
-              />
-            </Switch>
-          </Router>
-        </MemeImages.Provider>
-      </ThemeProvider>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <div>
+          <ThemeProvider theme={theme}>
+            <LoggedInMode.Provider value={loggedIn}>
+              <UserInfoMode.Provider value={userInfo}>
+                <NavigationBar
+                  doLogIn={doLogIn}
+                  doLogOut={doLogOut}
+                  menu={menu}
+                  handleMenu={handleMenu}
+                />
+              </UserInfoMode.Provider>
+            </LoggedInMode.Provider>
+            <MemeImages.Provider value={imgs}>
+              <Route path="/login">
+                {loggedIn ? <Redirect to="/" /> : <Login doLogIn={doLogIn} />}
+              </Route>
+              <Route exact path="/">
+                <MainContent memes={memes} />
+              </Route>
+            </MemeImages.Provider>
+          </ThemeProvider>
+        </div>
+      </Switch>
+    </BrowserRouter>
   );
 }
 

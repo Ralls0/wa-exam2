@@ -1,21 +1,8 @@
 import React from "react";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
 import { CardMeme } from "../CardMeme/CardMeme";
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    backgroundColor: "#FFFFFF",
-    margin: "7%",
-    maxWidth: "90vw",
-    minWidth: "60vw",
-    maxHeight: "70vh",
-    borderRadius: "25px",
-    listStyle: "none",
-    overflow: "scroll",
-  },
-}));
+import { useStyles } from "./styles";
 
 function MainContent(props) {
   const classes = useStyles();
@@ -36,8 +23,8 @@ function MainContent(props) {
                 initial={{ opacity: 0, x: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{
-                  delay: 1,
-                  duration: 1,
+                  delay: 0.2,
+                  duration: 0.2,
                 }}
               >
                 {props.memes &&

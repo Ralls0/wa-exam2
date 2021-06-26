@@ -11,52 +11,10 @@ import FormControl from "@material-ui/core/FormControl";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import Typography from "@material-ui/core/Typography";
 import { motion } from "framer-motion";
-import { makeStyles } from "@material-ui/core/styles";
 import { React, useState } from "react";
-
-const useStyles = makeStyles((theme) => ({
-  input: {
-    fontFamily: "Impact",
-    color: "#98CC6D",
-  },
-  container: {
-    backgroundColor: "#FAEAAC",
-    padding: "7%",
-    margin: "7%",
-    maxWidth: "80vw",
-    maxHeight: "50vh",
-    borderRadius: "25px",
-  },
-}));
-
-const useOutlinedInputStyles = makeStyles((theme) => ({
-  root: {
-    "& $notchedOutline": {
-      borderColor: theme.palette.primary.main,
-      borderWidth: 2,
-    },
-    "&:hover $notchedOutline": {
-      borderColor: theme.palette.secondary.main,
-    },
-    "&$focused $notchedOutline": {
-      borderColor: theme.palette.secondary.main,
-    },
-    "&$error $notchedOutline": {
-      borderColor: theme.palette.error.main,
-    },
-  },
-  focused: {
-    color: theme.palette.secondary.main,
-  },
-  hover: {
-    color: theme.palette.primary.main,
-  },
-  notchedOutline: {},
-  error: {
-    color: theme.palette.error.main,
-  },
-}));
+import { useStyles, useOutlinedInputStyles } from "./styles";
 
 function LoginForm(props) {
   const [open, setOpen] = useState(true);
@@ -99,6 +57,19 @@ function LoginForm(props) {
 
   return (
     <div>
+      <motion.div
+        initial={{ x: "-100vw" }}
+        animate={{ x: 0 }}
+        transition={{ delay: 1, type: "spring", stiffness: 50, duration: 1 }}
+      >
+        <Grid container justify="center" alignItems="center">
+          <Grid item>
+            <Typography variant="h3" className={classes.text}>
+              Login
+            </Typography>
+          </Grid>
+        </Grid>
+      </motion.div>
       <Grid container justify="center" alignItems="center" spacing={3}>
         <Grid item spacing={3}>
           {errorMessage ? (
@@ -138,6 +109,7 @@ function LoginForm(props) {
             <FormControl variant="outlined">
               <InputLabel htmlFor="email">Email</InputLabel>
               <OutlinedInput
+                fullWidth="true"
                 id="email"
                 type="email"
                 value={username}
@@ -160,6 +132,7 @@ function LoginForm(props) {
             <FormControl variant="outlined">
               <InputLabel htmlFor="password">Password</InputLabel>
               <OutlinedInput
+                fullWidth="true"
                 id="password"
                 type={showPassword ? "text" : "password"}
                 value={password}
