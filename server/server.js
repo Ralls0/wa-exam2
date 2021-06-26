@@ -119,6 +119,16 @@ app.get("/api/info/imgs/", async (req, res) => {
   }
 });
 
+// GET /api/fonts
+app.get("/api/fonts", async (req, res) => {
+  try {
+    const fonts = await memeDao.getFonts();
+    res.json(fonts);
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
 /*** Users APIs ***/
 /** login **/
 app.post("/api/sessions", function (req, res, next) {

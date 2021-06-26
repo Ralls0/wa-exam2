@@ -126,9 +126,7 @@ function MemeImg(props) {
     font: props.font,
   });
   return (
-    <Grid container direction="column" justify="center" alignItems="center">
-      <Grid item className={classes.memeimg}>
-        <Grid container direction="column" justify="center" alignItems="center" spacing={9}>
+        <Grid container direction="column" justify="space-evenly" alignItems="center" spacing={10} className={classes.memeimg}>
           <Grid item>
           {props.text.top && (
               <Typography variant="h3" className={classes.text}>
@@ -151,8 +149,6 @@ function MemeImg(props) {
           )}
           </Grid>
         </Grid>
-      </Grid>
-    </Grid>
   );
 }
 

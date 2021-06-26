@@ -60,7 +60,7 @@ function LoginForm(props) {
       <motion.div
         initial={{ x: "-100vw" }}
         animate={{ x: 0 }}
-        transition={{ delay: 1, type: "spring", stiffness: 50, duration: 1 }}
+        transition={{ delay: 0.5, type: "spring", stiffness: 50, duration: 1 }}
       >
         <Grid container justify="center" alignItems="center">
           <Grid item>
@@ -102,9 +102,9 @@ function LoginForm(props) {
       <motion.div
         initial={{ x: "100vw" }}
         animate={{ x: 0 }}
-        transition={{ delay: 1, type: "spring", stiffness: 50, duration: 1 }}
+        transition={{ delay: 0.5, type: "spring", stiffness: 50, duration: 1 }}
       >
-        <Grid container justify="center" alignItems="center" spacing={3}>
+        <Grid container justify="center" alignItems="stretch" spacing={3}>
           <Grid item spacing={3}>
             <FormControl variant="outlined">
               <InputLabel htmlFor="email">Email</InputLabel>
@@ -116,7 +116,6 @@ function LoginForm(props) {
                 onChange={(e) => setUsername(e.target.value)}
                 secondary
                 classes={outlinedInputClasses}
-                fullWidth="true"
                 endAdornment={
                   <InputAdornment position="end" className={classes.input}>
                     <AccountCircle />
@@ -127,7 +126,7 @@ function LoginForm(props) {
             </FormControl>
           </Grid>
         </Grid>
-        <Grid container justify="center" alignItems="center" spacing={3}>
+        <Grid container justify="center" alignItems="stretch" spacing={3}>
           <Grid item spacing={3}>
             <FormControl variant="outlined">
               <InputLabel htmlFor="password">Password</InputLabel>
@@ -152,7 +151,6 @@ function LoginForm(props) {
                     </IconButton>
                   </InputAdornment>
                 }
-                fullWidth="true"
                 labelWidth={70}
               />
             </FormControl>
@@ -165,10 +163,10 @@ function LoginForm(props) {
             initial={{ x: "-100vw" }}
             animate={{ x: 0 }}
             transition={{
-              delay: 0.6,
+              delay: 0.5,
               type: "spring",
               stiffness: 50,
-              duration: 0.6,
+              duration: 0.1,
             }}
           >
             <Button

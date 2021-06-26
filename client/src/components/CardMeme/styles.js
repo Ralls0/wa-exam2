@@ -36,11 +36,13 @@ const useStyles = makeStyles((theme) => ({
     color: "#6F9D58",
   },
   memeimg: {
+    margin: "5%",
     backgroundImage: (props) => `url(${props.img})`,
-    minWidth: "40vw",
-    minHeight: "40vh",
+    minWidth: "45vw",
+    maxWidth: "45vw",
+    minHeight: "55vh",
     backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
+    backgroundSize: "100% 100%",
     borderRadius: "15px",
   },
   text: {

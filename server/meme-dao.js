@@ -119,3 +119,21 @@ exports.getImagesInfo = () => {
     });
   });
 };
+
+// get all fonts
+exports.getFonts = () => {
+  return new Promise((resolve, reject) => {
+    const sql = "SELECT * FROM fonts";
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      const fonts = rows.map((e) => ({
+        id: e.id,
+        font: e.family
+      }));
+      resolve(fonts);
+    });
+  });
+};

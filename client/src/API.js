@@ -14,6 +14,17 @@ async function getAllMemes() {
   }
 }
 
+async function getFonts() {
+  // call: GET /api/fonts
+  const response = await fetch(BASEURL + "/fonts");
+  const fontsJson = await response.json();
+  if (response.ok) {
+    return fontsJson
+  } else {
+    throw fontsJson; // an object with the error coming from the server
+  }
+}
+
 async function getPublicMemes() {
   // call: GET /api/memes/public
   const response = await fetch(BASEURL + "/memes/public");
@@ -88,6 +99,7 @@ async function getUserInfo() {
 
 const API = {
   getAllMemes,
+  getFonts,
   getPublicMemes,
   getInfoImages,
   getImage,

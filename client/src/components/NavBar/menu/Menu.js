@@ -29,8 +29,8 @@ function Menu(props) {
             </Link>
           </Grid>
           <Grid item>
-            <Link to="/generate" onClick={() => props.handleMenu('/generate')} className={classes.link}>
-              <Typography variant="h5" className={props.menu==='/generate'?classes.active:classes.menu}>
+            <Link to="/generator" onClick={() => props.handleMenu('/generator')} className={classes.link}>
+              <Typography variant="h5" className={props.menu==='/generator'?classes.active:classes.menu}>
                 Generator
               </Typography>
             </Link>

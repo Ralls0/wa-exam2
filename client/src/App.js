@@ -13,6 +13,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import API from "./API";
 import NavigationBar from "./components/NavBar/Navbar";
 import { Login } from "./components/Login/Login";
+import { Generator } from "./components/Generator/Generator";
 import { MainContent } from "./components/MainContent/MainContent";
 import { LoggedInMode, UserInfoMode, MemeImages } from "./createContexts";
 
@@ -134,6 +135,7 @@ function App() {
     try {
       const user = await API.logIn(credentials);
       setLoggedIn(true);
+      setMenu("/");
       setMessage({ msg: `Welcome, ${user}!`, type: "success" });
       setDirty(true);
     } catch (err) {
@@ -166,6 +168,9 @@ function App() {
             <MemeImages.Provider value={imgs}>
               <Route path="/login">
                 {loggedIn ? <Redirect to="/" /> : <Login doLogIn={doLogIn} />}
+              </Route>
+              <Route path="/generator">
+                {!loggedIn ? <Redirect to="/login" /> : <Generator />}
               </Route>
               <Route exact path="/">
                 <MainContent memes={memes} />
