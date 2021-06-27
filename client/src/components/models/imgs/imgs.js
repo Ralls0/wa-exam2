@@ -5,16 +5,16 @@
     constructor(
       id,
       img,
-      texttop,
-      textcenter,
-      textbottom,
+      top,
+      center,
+      bottom,
     ) {
       this.id = id;
       this.code = id;
       this.img = img;
-      this.texttop = texttop;
-      this.textcenter = textcenter;
-      this.textbottom = textbottom;
+      this.top = top;
+      this.center = center;
+      this.bottom = bottom;
     }
   
     /**

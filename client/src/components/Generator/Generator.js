@@ -14,12 +14,12 @@ function Generator(props) {
   const [img, setImg] = useState("");
   const [font, setFont] = useState("");
 
-
   const fonts = useContext(MemeFonts);
   const imgs = useContext(MemeImages);
 
   useEffect(() => {
     setFont(fonts[0].font);
+    setImg(props.img ? props.img : imgs[0]);
   }, []);
 
   const handleText = (text, position) => {
@@ -55,7 +55,7 @@ function Generator(props) {
   return (
     <Grid container direction="row" justify="space-around" alignItems="center">
       <Grid item>
-        <Grid container direction="column" justify="center" alignItems="center" >
+        <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>
             <MemeImg
               img={img.img}
@@ -65,13 +65,14 @@ function Generator(props) {
             />
           </Grid>
           <Grid item>
-            <Slider images={imgs} handleImg={handleImg} />
+            {!props.img && <Slider images={imgs} handleImg={handleImg} />}
           </Grid>
         </Grid>
       </Grid>
 
       <Grid item>
         <FormGenerator
+          images={img}
           color={color}
           font={font}
           fonts={fonts}
@@ -81,6 +82,8 @@ function Generator(props) {
           handleColor={handleColor}
           handleText={handleText}
           handleFont={handleFont}
+          privat={props.copy && props.diffUser ? props.privat : undefined}
+          copy={props.copy}
         />
       </Grid>
     </Grid>

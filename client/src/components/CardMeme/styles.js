@@ -38,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
   memeimg: {
     margin: "5%",
     backgroundImage: (props) => `url(${props.img})`,
-    minWidth: "45vw",
-    maxWidth: "45vw",
-    minHeight: "55vh",
+    minWidth: "40vw",
+    maxWidth: "40vw",
+    minHeight: "50vh",
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",
     borderRadius: "15px",

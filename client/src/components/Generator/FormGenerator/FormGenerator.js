@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
-import SendIcon from '@material-ui/icons/Send';
+import SendIcon from "@material-ui/icons/Send";
 import Alert from "@material-ui/lab/Alert";
 import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
@@ -20,9 +20,15 @@ import { useStyles, useOutlinedInputStyles } from "./styles";
 function FormGenerator(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [open, setOpen] = useState(true);
-  const [privat, setPrivat] = useState("public");
+  const [privat, setPrivat] = useState(props.proivat || "public");
 
-  console.log(props);
+  useEffect(() => {
+    if(props.images.top !== 1) props.handleText("", "top");
+    if(props.images.center !== 1) props.handleText("", "center");
+    if(props.images.bottom !== 1) props.handleText("", "bottom");
+  }, [props.images])
+
+
 
   const handleChange = (event) => {
     setPrivat(event.target.value);
@@ -125,7 +131,6 @@ function FormGenerator(props) {
           <Grid item>
             <input
               id="color"
-              id="color"
               type="color"
               value={props.color}
               onChange={(e) => props.handleColor(e.target.value)}
@@ -163,6 +168,7 @@ function FormGenerator(props) {
             name="permission1"
             value={privat}
             onChange={handleChange}
+            disabled={props.privat === "private"}
           >
             <Grid
               container
@@ -211,6 +217,7 @@ function FormGenerator(props) {
               <FormControl variant="outlined">
                 <InputLabel htmlFor="email">Text Top</InputLabel>
                 <OutlinedInput
+                  disabled={props.images.top !== 1}
                   fullWidth="true"
                   id="text"
                   type="text"
@@ -226,6 +233,7 @@ function FormGenerator(props) {
               <FormControl variant="outlined">
                 <InputLabel htmlFor="email">Text Center</InputLabel>
                 <OutlinedInput
+                  disabled={props.images.center !== 1}
                   fullWidth="true"
                   id="text"
                   type="text"
@@ -241,6 +249,7 @@ function FormGenerator(props) {
               <FormControl variant="outlined">
                 <InputLabel htmlFor="email">Text Bottom</InputLabel>
                 <OutlinedInput
+                  disabled={props.images.bottom !== 1}
                   fullWidth="true"
                   id="text"
                   type="text"
