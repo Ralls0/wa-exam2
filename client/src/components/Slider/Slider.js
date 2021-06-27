@@ -25,11 +25,13 @@ function Slider(props) {
     setPage((page) => [page[0] + newDirection, newDirection]);
   };
 
+  console.log("Slider")
+
   return (
-    <Grid container direction="row" justify="space-between" alignItems="center">
+    <Grid container direction="row" justify="center" alignItems="center">
       <Grid item>
         <IconButton
-          color="primary"
+          color="secondary"
           aria-label="left arrow"
           component="span"
           onClick={() => paginate(1)}
@@ -70,7 +72,7 @@ function Slider(props) {
       </Grid>
       <Grid item>
         <IconButton
-          color="primary"
+          color="secondary"
           aria-label="right arrow"
           component="span"
           onClick={() => paginate(-1)}

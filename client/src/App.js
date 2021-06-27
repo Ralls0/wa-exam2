@@ -1,13 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter
-} from "react-router-dom";
-import {
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import API from "./API";
@@ -15,7 +9,12 @@ import NavigationBar from "./components/NavBar/Navbar";
 import { Login } from "./components/Login/Login";
 import { Generator } from "./components/Generator/Generator";
 import { MainContent } from "./components/MainContent/MainContent";
-import { LoggedInMode, UserInfoMode, MemeImages } from "./createContexts";
+import {
+  LoggedInMode,
+  UserInfoMode,
+  MemeImages,
+  MemeFonts,
+} from "./createContexts";
 
 const theme = createMuiTheme({
   palette: {
@@ -42,6 +41,7 @@ function App() {
   const [dirty, setDirty] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
   const [message, setMessage] = useState("");
+  const [fonts, setFonts] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [memes, setMemes] = useState([]);
   const [imgs, setImgs] = useState([]);
@@ -78,10 +78,25 @@ function App() {
         setMemes(ms);
       }
     };
+
     const getAllImg = async () => {
       const is = await API.getInfoImages();
       setImgs(is);
     };
+
+    const getAllFonts = async () => {
+      const f = await API.getFonts();
+      setFonts(f);
+    };
+
+    getAllFonts().catch((err) => {
+      setMessage({
+        msg: "Impossible to load fonts! Please, try again later...",
+        type: "danger",
+      });
+      handleErrors(err);
+      console.error(err);
+    });
 
     getAllImg().catch((err) => {
       setMessage({
@@ -101,24 +116,6 @@ function App() {
       console.error(err);
     });
   }, [loggedIn, memes.length]);
-
-  /*   useEffect(() => {
-    if (dirty) {
-      const getAllImg = async () => {
-        const is = await API.getInfoImages();
-        setImgs(is);
-      };
-      setDirty(false);
-      getAllImg().catch((err) => {
-        setMessage({
-          msg: "Impossible to load imgs! Please, try again later...",
-          type: "danger",
-        });
-        handleErrors(err);
-        console.error(err);
-      });
-    }
-  }, [dirty]); */
 
   const handleErrors = (err) => {
     if (err.errors)
@@ -166,15 +163,17 @@ function App() {
               </UserInfoMode.Provider>
             </LoggedInMode.Provider>
             <MemeImages.Provider value={imgs}>
-              <Route path="/login">
-                {loggedIn ? <Redirect to="/" /> : <Login doLogIn={doLogIn} />}
-              </Route>
-              <Route path="/generator">
-                {!loggedIn ? <Redirect to="/login" /> : <Generator />}
-              </Route>
-              <Route exact path="/">
-                <MainContent memes={memes} />
-              </Route>
+              <MemeFonts.Provider value={fonts}>
+                <Route path="/login">
+                  {loggedIn ? <Redirect to="/" /> : <Login doLogIn={doLogIn} />}
+                </Route>
+                <Route path="/generator">
+                  {!loggedIn ? <Redirect to="/login" /> : <Generator />}
+                </Route>
+                <Route exact path="/">
+                  <MainContent memes={memes} />
+                </Route>
+              </MemeFonts.Provider>
             </MemeImages.Provider>
           </ThemeProvider>
         </div>

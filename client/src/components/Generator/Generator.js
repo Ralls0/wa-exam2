@@ -1,12 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import { MemeImages } from "../../createContexts";
+import { MemeImages, MemeFonts } from "../../createContexts";
 import Grid from "@material-ui/core/Grid";
 import { Slider } from "../Slider/Slider";
 import { MemeImg } from "../CardMeme/CardMeme";
-import { useStyles } from "./styles";
-import API from "../../API";
-
-function FormGenerator(props) {}
+import { FormGenerator } from "./FormGenerator/FormGenerator";
 
 function Generator(props) {
   const [title, setTitle] = useState("");
@@ -14,23 +11,16 @@ function Generator(props) {
   const [textCenter, setTextCenter] = useState("");
   const [textBottom, setTextBottom] = useState("");
   const [color, setColor] = useState("#FFFFFF");
-  const [fonts, setFonts] = useState("");
-  const [font, setFont] = useState("");
   const [img, setImg] = useState("");
+  const [font, setFont] = useState("");
 
-  const classes = useStyles();
+
+  const fonts = useContext(MemeFonts);
+  const imgs = useContext(MemeImages);
 
   useEffect(() => {
-    const getAllFonts = async () => {
-      const f = await API.getFonts();
-      setFont(f[0]);
-      return f;
-    };
-
-    setFonts(getAllFonts());
+    setFont(fonts[0].font);
   }, []);
-
-  const imgs = useContext(MemeImages);
 
   const handleText = (text, position) => {
     if (position === "top") {
@@ -48,18 +38,50 @@ function Generator(props) {
     setImg(img);
   };
 
+  const handleTitle = (title) => {
+    setTitle(title);
+  };
+
+  const handleFont = (font) => {
+    setFont(font);
+  };
+
   const handleColor = (color) => {
     setColor(color);
   };
 
+  console.log("Generator");
+
   return (
-    <Grid container direction="row" justify="space-around" alignItems="flex-start">
-      <Grid item className={classes.slider}>
-        <MemeImg img={img.img} color="#FFFFFF" font="Impact" text={{top: "top", center: "center", bottom: "bottom"}} />
-        <Slider images={imgs} handleImg={handleImg} />
-      </Grid>
+    <Grid container direction="row" justify="space-around" alignItems="center">
       <Grid item>
-        <h1> Prova </h1>
+        <Grid container direction="column" justify="center" alignItems="center" >
+          <Grid item>
+            <MemeImg
+              img={img.img}
+              color={color}
+              font={font}
+              text={{ top: textTop, center: textCenter, bottom: textBottom }}
+            />
+          </Grid>
+          <Grid item>
+            <Slider images={imgs} handleImg={handleImg} />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid item>
+        <FormGenerator
+          color={color}
+          font={font}
+          fonts={fonts}
+          text={{ top: textTop, center: textCenter, bottom: textBottom }}
+          title={title}
+          handleTitle={handleTitle}
+          handleColor={handleColor}
+          handleText={handleText}
+          handleFont={handleFont}
+        />
       </Grid>
     </Grid>
   );

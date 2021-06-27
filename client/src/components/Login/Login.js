@@ -121,7 +121,7 @@ function LoginForm(props) {
                     <AccountCircle />
                   </InputAdornment>
                 }
-                labelWidth={70}
+                labelWidth={100}
               />
             </FormControl>
           </Grid>
@@ -151,7 +151,7 @@ function LoginForm(props) {
                     </IconButton>
                   </InputAdornment>
                 }
-                labelWidth={70}
+                labelWidth={100}
               />
             </FormControl>
           </Grid>
