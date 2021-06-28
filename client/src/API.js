@@ -19,7 +19,7 @@ async function getFonts() {
   const response = await fetch(BASEURL + "/fonts");
   const fontsJson = await response.json();
   if (response.ok) {
-    return fontsJson
+    return fontsJson;
   } else {
     throw fontsJson; // an object with the error coming from the server
   }
@@ -41,10 +41,12 @@ async function getInfoImages() {
   const response = await fetch(BASEURL + "/info/imgs/");
   const imgsJson = await response.json();
   if (response.ok) {
-    for(let img of imgsJson) {
-      img['img'] = await getImage(img.id).catch((err) => {throw err});
+    for (let img of imgsJson) {
+      img["img"] = await getImage(img.id).catch((err) => {
+        throw err;
+      });
     }
-    
+
     return imgsJson.map((img) => Img.from(img));
   } else {
     throw imgsJson; // an object with the error coming from the server
@@ -60,6 +62,87 @@ async function getImage(id) {
   } else {
     throw imgJson; // an object with the error coming from the server
   }
+}
+
+function addMeme(meme) {
+  // call: POST /api/memes
+  return new Promise((resolve, reject) => {
+    fetch(BASEURL + "/memes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: meme.title,
+        texttop: meme.texttop,
+        textcenter: meme.textcenter,
+        textbottom: meme.textbottom,
+        img: meme.img,
+        privat: meme.privat,
+        user: meme.user,
+        copy: meme.copy,
+        font: meme.font,
+        color: meme.color,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          resolve(null);
+        } else {
+          // analyze the cause of error
+          response
+            .json()
+            .then((message) => {
+              reject(message);
+            }) // error message in the response body
+            .catch(() => {
+              reject({ error: "Cannot parse server response." });
+            });
+        }
+      })
+      .catch(() => {
+        reject({ error: "Cannot communicate with the server." });
+      }); // connection errors
+  });
+}
+
+function updateMeme(meme) {
+  // call: PUT /api/memes/:id
+  return new Promise((resolve, reject) => {
+    fetch(BASEURL + "/memes/" + meme.id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: meme.id,
+        title: meme.title,
+        texttop: meme.texttop,
+        textcenter: meme.textcenter,
+        textbottom: meme.textbottom,
+        privat: meme.privat,
+        font: meme.font,
+        color: meme.color,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          resolve(null);
+        } else {
+          response
+            .json()
+            .then((obj) => {
+              reject(obj);
+            })
+            .catch(() => {
+              reject({ error: "Cannot parse server response." });
+            });
+        }
+      })
+      .catch(() => {
+        reject({ error: "Cannot communicate with the server." });
+      }); // connection errors
+  });
 }
 
 async function logIn(credentials) {
@@ -103,6 +186,8 @@ const API = {
   getPublicMemes,
   getInfoImages,
   getImage,
+  addMeme,
+  updateMeme,
   logIn,
   logOut,
   getUserInfo,

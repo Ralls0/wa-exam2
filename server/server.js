@@ -129,6 +129,56 @@ app.get("/api/fonts", async (req, res) => {
   }
 });
 
+// POST /api/memes
+app.post('/api/memes', isLoggedIn, [
+  check('title').not().notEmpty(),
+  check('img').not(),
+  check('privat').not(),
+  check('user').not(),
+  check('font').not(),
+  check('color').isLength({min: 7, max: 7}),
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({errors: errors.array()});
+  }
+
+  const meme = req.body;
+
+  try {
+    await memeDao.createMeme(meme);
+    res.status(201).end();
+  } catch(err) {
+    res.status(503).json({error: `Database error during the creation of meme ${meme.title}.`});
+  }
+});
+
+// PUT /api/memes/<id>
+app.put('/api/memes/:id', isLoggedIn, [
+  check('title').not().notEmpty(),
+  check('privat').not(),
+  check('user').not(),
+  check('font').not(),
+  check('color').isLength({min: 7, max: 7}),
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({errors: errors.array()});
+  }
+
+  const meme = req.body;
+
+  if(req.params.id !== meme.id) res.status(503).json({error: `Meme is mismatch ${req.params.id} is not ${meme.id}.`});
+
+  try {
+    await memeDao.updateMeme(meme);
+    res.status(200).end();
+  } catch(err) {
+    res.status(503).json({error: `Database error during the update of meme ${req.params.id}.`});
+  }
+
+});
+
 /*** Users APIs ***/
 /** login **/
 app.post("/api/sessions", function (req, res, next) {

@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
       maxHeight: "70vh",
       borderRadius: "25px",
       listStyle: "none",
-      overflow: "scroll",
+      overflowY: "scroll",
     },
   }));
 
