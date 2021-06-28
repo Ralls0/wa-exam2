@@ -150,33 +150,37 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <div>
-          <ThemeProvider theme={theme}>
-            <LoggedInMode.Provider value={loggedIn}>
-              <UserInfoMode.Provider value={userInfo}>
+        <>
+          <UserInfoMode.Provider value={userInfo}>
+            <ThemeProvider theme={theme}>
+              <LoggedInMode.Provider value={loggedIn}>
                 <NavigationBar
                   doLogIn={doLogIn}
                   doLogOut={doLogOut}
                   menu={menu}
                   handleMenu={handleMenu}
                 />
-              </UserInfoMode.Provider>
-            </LoggedInMode.Provider>
-            <MemeImages.Provider value={imgs}>
-              <MemeFonts.Provider value={fonts}>
-                <Route path="/login">
-                  {loggedIn ? <Redirect to="/" /> : <Login doLogIn={doLogIn} />}
-                </Route>
-                <Route path="/generator">
-                  {!loggedIn ? <Redirect to="/login" /> : <Generator />}
-                </Route>
-                <Route exact path="/">
-                  <MainContent memes={memes} />
-                </Route>
-              </MemeFonts.Provider>
-            </MemeImages.Provider>
-          </ThemeProvider>
-        </div>
+              </LoggedInMode.Provider>
+              <MemeImages.Provider value={imgs}>
+                <MemeFonts.Provider value={fonts}>
+                  <Route path="/login">
+                    {loggedIn ? (
+                      <Redirect to="/" />
+                    ) : (
+                      <Login doLogIn={doLogIn} />
+                    )}
+                  </Route>
+                  <Route path="/generator">
+                    {!loggedIn ? <Redirect to="/login" /> : <Generator />}
+                  </Route>
+                  <Route exact path="/">
+                    <MainContent memes={memes} />
+                  </Route>
+                </MemeFonts.Provider>
+              </MemeImages.Provider>
+            </ThemeProvider>
+          </UserInfoMode.Provider>
+        </>
       </Switch>
     </BrowserRouter>
   );

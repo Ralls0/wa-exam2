@@ -27,13 +27,6 @@ const useOutlinedInputStyles = makeStyles((theme) => ({
   focused: {
     color: theme.palette.secondary.main,
   },
-  hover: {
-    color: theme.palette.primary.main,
-  },
-  notchedOutline: {},
-  error: {
-    color: theme.palette.error.main,
-  },
 }));
 
 export { useStyles, useOutlinedInputStyles };

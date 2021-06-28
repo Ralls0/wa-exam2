@@ -39,8 +39,6 @@ function Slider(props) {
     });
   };
 
-  console.log("Slider");
-
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Grid item>
@@ -66,13 +64,14 @@ function Slider(props) {
                 }}
                 animate={{ opacity: 1 }}
                 transition={{
-                  opacity: { duration: 3 },
+                  opacity: { duration: 2 },
                   delay: 0.5,
-                  duration: 2,
+                  duration: 1,
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={1}
+                onClick={() => paginate(-1)}
               />
             </Grid>
             <Grid item>
@@ -85,9 +84,9 @@ function Slider(props) {
                 }}
                 animate={{ opacity: 1 }}
                 transition={{
-                  opacity: { duration: 3 },
+                  opacity: { duration: 2 },
                   delay: 0.5,
-                  duration: 2,
+                  duration: 1,
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
@@ -104,13 +103,14 @@ function Slider(props) {
                 }}
                 animate={{ opacity: 1 }}
                 transition={{
-                  opacity: { duration: 3 },
+                  opacity: { duration: 2 },
                   delay: 0.5,
-                  duration: 2,
+                  duration: 1,
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={1}
+                onClick={() => paginate(1)}
               />
             </Grid>
           </Grid>

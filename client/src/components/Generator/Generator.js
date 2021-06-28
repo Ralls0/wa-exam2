@@ -7,9 +7,9 @@ import { FormGenerator } from "./FormGenerator/FormGenerator";
 
 function Generator(props) {
   const [title, setTitle] = useState("");
-  const [textTop, setTextTop] = useState("");
-  const [textCenter, setTextCenter] = useState("");
-  const [textBottom, setTextBottom] = useState("");
+  const [text1, setText1] = useState("");
+  const [text2, setText2] = useState("");
+  const [text3, setText3] = useState("");
   const [color, setColor] = useState("#FFFFFF");
   const [img, setImg] = useState("");
   const [font, setFont] = useState("");
@@ -18,19 +18,19 @@ function Generator(props) {
   const imgs = useContext(MemeImages);
 
   useEffect(() => {
-    setFont(fonts[0].font);
+    setFont(fonts[0]);
     setImg(props.img ? props.img : imgs[0]);
   }, []);
 
   const handleText = (text, position) => {
-    if (position === "top") {
-      setTextTop(text);
+    if (position === "text1") {
+      setText1(text);
     }
-    if (position === "center") {
-      setTextCenter(text);
+    if (position === "text2") {
+      setText2(text);
     }
-    if (position === "bottom") {
-      setTextBottom(text);
+    if (position === "text3") {
+      setText3(text);
     }
   };
 
@@ -50,18 +50,17 @@ function Generator(props) {
     setColor(color);
   };
 
-  console.log("Generator");
-
   return (
     <Grid container direction="row" justify="space-around" alignItems="center">
       <Grid item>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>
             <MemeImg
-              img={img.img}
+              img={img}
+              text={[text1, text2, text3 ]}
+              font={font.font}
+              size={font.size}
               color={color}
-              font={font}
-              text={{ top: textTop, center: textCenter, bottom: textBottom }}
             />
           </Grid>
           <Grid item>
@@ -76,7 +75,7 @@ function Generator(props) {
           color={color}
           font={font}
           fonts={fonts}
-          text={{ top: textTop, center: textCenter, bottom: textBottom }}
+          text={{ text1: text1, text2: text2, text3: text3 }}
           title={title}
           handleTitle={handleTitle}
           handleColor={handleColor}

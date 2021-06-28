@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     textShadow: "2px 2px 1px #000000",
     fontFamily: (props) => props.font,
     color: (props) => props.color,
+    fontSize: (props) => `${props.size}px`,
   },
 }));
 

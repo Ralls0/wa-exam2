@@ -1,6 +1,6 @@
 import React from "react";
-import { motion, AnimateSharedLayout } from "framer-motion";
 import Grid from "@material-ui/core/Grid";
+import { motion, AnimateSharedLayout } from "framer-motion";
 import { CardMeme } from "../CardMeme/CardMeme";
 import { useStyles } from "./styles";
 
@@ -19,7 +19,6 @@ function MainContent(props) {
           <Grid item className={classes.container}>
             <AnimateSharedLayout>
               <motion.div
-                layout
                 initial={{ opacity: 0, x: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{

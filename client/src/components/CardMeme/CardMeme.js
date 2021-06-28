@@ -22,20 +22,20 @@ function CardMeme(props) {
     if (imgs.length > 0) {
       let i = imgs.filter((image) => {
         return image.id === props.img;
-      })[0].img;
+      })[0];
       setImg(i);
     }
   }, [imgs, imgs.length, props.img]);
 
-  const toggleOpen = () => setIsOpen((oldIsOpen) => !isOpen);
+  const toggleOpen = () => setIsOpen((oldIsOpen) => !oldIsOpen);
 
   return (
-    <Card layout onClick={toggleOpen} className={classes.cardMemeContainer}>
+    <Card onClick={toggleOpen} className={classes.cardMemeContainer}>
       <CardContent>
         <InfoMeme
           title={props.meme.title}
           user={props.meme.user}
-          private={props.meme.private}
+          private={props.meme.privat}
           copy={props.meme.copy}
         />
         <AnimatePresence>
@@ -43,12 +43,9 @@ function CardMeme(props) {
             <Content
               img={img}
               font={props.meme.font}
+              size={props.meme.size}
               color={props.meme.color}
-              text={{
-                top: props.meme.texttop,
-                center: props.meme.textcenter,
-                bottom: props.meme.textbottom,
-              }}
+              text={[props.meme.text1, props.meme.text2, props.meme.text3]}
             />
           )}
         </AnimatePresence>
@@ -94,7 +91,7 @@ function InfoMeme(props) {
           )}
         </Grid>
         <Grid item>
-          {props.copy && <CallSplitSharpIcon className={classes.copy} />}
+          {props.copy === 1 && <CallSplitSharpIcon className={classes.copy} />}
         </Grid>
       </Grid>
     </Grid>
@@ -104,7 +101,6 @@ function InfoMeme(props) {
 function Content(props) {
   return (
     <motion.div
-      layout
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -113,6 +109,7 @@ function Content(props) {
         img={props.img}
         text={props.text}
         font={props.font}
+        size={props.size}
         color={props.color}
       />
     </motion.div>
@@ -121,34 +118,115 @@ function Content(props) {
 
 function MemeImg(props) {
   const classes = useStyles({
-    img: props.img,
+    img: props.img.img,
     color: props.color,
     font: props.font,
+    size: props.size,
   });
+  let cnt = 0;
+  let txtg = [];
+  txtg.push(props.img.tl);
+  txtg.push(props.img.tc);
+  txtg.push(props.img.tr);
+  txtg.push(props.img.ml);
+  txtg.push(props.img.mc);
+  txtg.push(props.img.mr);
+  txtg.push(props.img.bl);
+  txtg.push(props.img.bc);
+  txtg.push(props.img.br);
+
+  for (let e of txtg) {
+    if (e === 1) txtg[txtg.indexOf(e)] = props.text[cnt++];
+  }
+
   return (
-        <Grid container direction="column" justify="space-evenly" alignItems="center" spacing={10} className={classes.memeimg}>
+    <Grid
+      container
+      direction="column"
+      justify="space-evenly"
+      alignItems="center"
+      spacing={10}
+      className={classes.memeimg}
+    >
+      <Grid item>
+        <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          alignItems="center"
+        >
           <Grid item>
-          {props.text.top && (
-              <Typography variant="h3" className={classes.text}>
-                {props.text.top}
-              </Typography>
-          )}
+            {txtg[0] !== 0 && (
+              <Typography className={classes.text}>{txtg[0]}</Typography>
+            )}
           </Grid>
           <Grid item>
-          {props.text.center && (
-              <Typography variant="h3" className={classes.text}>
-                {props.text.center}
-              </Typography>
-          )}
+            {txtg[1] !== 0 && (
+              <Typography className={classes.text}>{txtg[1]}</Typography>
+            )}
           </Grid>
           <Grid item>
-          {props.text.bottom && (
-              <Typography variant="h3" className={classes.text}>
-                {props.text.bottom}
+            {txtg[2] !== 0 && (
+              <Typography className={classes.text}>
+                {txtg[2]}
               </Typography>
-          )}
+            )}
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item>
+        <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Grid item>
+            {txtg[3] !== 0 && (
+              <Typography className={classes.text}>{txtg[3]}</Typography>
+            )}
+          </Grid>
+          <Grid item>
+            {txtg[4] !== 0 && (
+              <Typography className={classes.text}>{txtg[4]}</Typography>
+            )}
+          </Grid>
+          <Grid item>
+            {txtg[5] !== 0 && (
+              <Typography className={classes.text}>
+                {txtg[5]}
+              </Typography>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Grid item>
+            {txtg[6] !== 0 && (
+              <Typography className={classes.text}>{txtg[6]}</Typography>
+            )}
+          </Grid>
+          <Grid item>
+            {txtg[7] !== 0 && (
+              <Typography className={classes.text}>{txtg[7]}</Typography>
+            )}
+          </Grid>
+          <Grid item>
+            {txtg[8] !== 0 && (
+              <Typography className={classes.text}>
+                {txtg[8]}
+              </Typography>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 

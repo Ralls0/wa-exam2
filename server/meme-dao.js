@@ -7,7 +7,7 @@ const { db } = require("./db");
 exports.listMemes = () => {
   return new Promise((resolve, reject) => {
     const sql =
-      "SELECT m.id, m.title, m.texttop, m.textcenter, m.textbottom, m.img, m.private, u.name AS user, m.copy, f.family AS font, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id";
+      "SELECT m.id, m.title, m.text1, m.text2, m.text3, m.img, m.private, u.name AS user, m.copy, f.family AS font, f.size, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id";
     db.all(sql, [], (err, rows) => {
       if (err) {
         reject(err);
@@ -16,14 +16,15 @@ exports.listMemes = () => {
       const memes = rows.map((e) => ({
         id: e.id,
         title: e.title,
-        texttop: e.texttop,
-        textcenter: e.textcenter,
-        textbottom: e.textbottom,
+        text1: e.text1,
+        text2: e.text2,
+        text3: e.text3,
         img: e.img,
         privat: e.private,
         user: e.user,
         copy: e.copy,
         font: e.font,
+        size: e.size,
         color: e.color,
       }));
       resolve(memes);
@@ -35,7 +36,7 @@ exports.listMemes = () => {
 exports.listPublicMemes = () => {
   return new Promise((resolve, reject) => {
     const sql =
-      "SELECT m.id, m.title, m.texttop, m.textcenter, m.textbottom, m.img, m.private, u.name AS user, m.copy, f.family AS font, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id AND m.private = 0";
+      "SELECT m.id, m.title, m.text1, m.text2, m.text3, m.img, m.private, u.name AS user, m.copy, f.family AS font, f.size, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id AND m.private = 0";
     db.all(sql, [], (err, rows) => {
       if (err) {
         reject(err);
@@ -44,14 +45,15 @@ exports.listPublicMemes = () => {
       const memes = rows.map((e) => ({
         id: e.id,
         title: e.title,
-        texttop: e.texttop,
-        textcenter: e.textcenter,
-        textbottom: e.textbottom,
+        text1: e.text1,
+        text2: e.text2,
+        text3: e.text3,
         img: e.img,
-        private: e.private,
+        privat: e.private,
         user: e.user,
         copy: e.copy,
         font: e.font,
+        size: e.size,
         color: e.color,
       }));
       resolve(memes);
@@ -91,10 +93,16 @@ exports.getImageInfo = (id) => {
         resolve({ error: "Image not found." });
       } else {
         const img = {
-          id: row.id,
-          top: row.top,
-          center: row.center,
-          bottom: row.bottom,
+          id: e.id,
+          tl: e.tl,
+          tc: e.tc,
+          tr: e.tr,
+          ml: e.ml,
+          mc: e.mc,
+          mr: e.mr,
+          bl: e.bl,
+          bc: e.bc,
+          br: e.br,
         };
         resolve(img);
       }
@@ -113,9 +121,15 @@ exports.getImagesInfo = () => {
       }
       const images = rows.map((e) => ({
         id: e.id,
-        top: e.top,
-        center: e.center,
-        bottom: e.bottom,
+        tl: e.tl,
+        tc: e.tc,
+        tr: e.tr,
+        ml: e.ml,
+        mc: e.mc,
+        mr: e.mr,
+        bl: e.bl,
+        bc: e.bc,
+        br: e.br,
       }));
       resolve(images);
     });
@@ -134,6 +148,7 @@ exports.getFonts = () => {
       const fonts = rows.map((e) => ({
         id: e.id,
         font: e.family,
+        size: e.size,
       }));
       resolve(fonts);
     });
@@ -144,48 +159,20 @@ exports.getFonts = () => {
 exports.createMeme = (meme) => {
   return new Promise((resolve, reject) => {
     const sql =
-      "INSERT INTO memes(title, texttop, textcenter, textbottom, img, private, user, copy, font, color) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO memes(title, text1, text2, text3, img, private, user, copy, font, color) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     db.run(
       sql,
       [
         meme.title,
-        meme.texttop,
-        meme.textcenter,
-        meme.textbottom,
+        meme.text1,
+        meme.text2,
+        meme.text3,
         meme.img,
         meme.privat,
         meme.user,
         meme.copy,
         meme.font,
         meme.color,
-      ],
-      function (err) {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(this.lastID);
-      }
-    );
-  });
-};
-
-// update an existing meme
-exports.updateMeme = (meme) => {
-  return new Promise((resolve, reject) => {
-    const sql =
-      "UPDATE exam SET title=?, texttop=?, textcenter=?, textbottom=?, private=?, font=?, color WHERE id = ?";
-    db.run(
-      sql,
-      [
-        meme.title,
-        meme.texttop,
-        meme.textcenter,
-        meme.textbottom,
-        meme.privat,
-        meme.font,
-        meme.color,
-        meme.id,
       ],
       function (err) {
         if (err) {

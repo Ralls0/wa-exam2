@@ -74,9 +74,9 @@ function addMeme(meme) {
       },
       body: JSON.stringify({
         title: meme.title,
-        texttop: meme.texttop,
-        textcenter: meme.textcenter,
-        textbottom: meme.textbottom,
+        text1: meme.text1,
+        text2: meme.text2,
+        text3: meme.text3,
         img: meme.img,
         privat: meme.privat,
         user: meme.user,
@@ -95,45 +95,6 @@ function addMeme(meme) {
             .then((message) => {
               reject(message);
             }) // error message in the response body
-            .catch(() => {
-              reject({ error: "Cannot parse server response." });
-            });
-        }
-      })
-      .catch(() => {
-        reject({ error: "Cannot communicate with the server." });
-      }); // connection errors
-  });
-}
-
-function updateMeme(meme) {
-  // call: PUT /api/memes/:id
-  return new Promise((resolve, reject) => {
-    fetch(BASEURL + "/memes/" + meme.id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: meme.id,
-        title: meme.title,
-        texttop: meme.texttop,
-        textcenter: meme.textcenter,
-        textbottom: meme.textbottom,
-        privat: meme.privat,
-        font: meme.font,
-        color: meme.color,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          resolve(null);
-        } else {
-          response
-            .json()
-            .then((obj) => {
-              reject(obj);
-            })
             .catch(() => {
               reject({ error: "Cannot parse server response." });
             });
@@ -187,7 +148,6 @@ const API = {
   getInfoImages,
   getImage,
   addMeme,
-  updateMeme,
   logIn,
   logOut,
   getUserInfo,

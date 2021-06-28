@@ -5,27 +5,29 @@ class Meme {
   constructor(
     id,
     title,
-    texttop,
-    textcenter,
-    textbottom,
+    text1,
+    text2,
+    text3,
     img,
     privat,
     user,
     copy,
     font,
+    size,
     color
   ) {
     this.id = id;
     this.code = id;
     this.title = title;
-    this.texttop = texttop;
-    this.textcenter = textcenter;
-    this.textbottom = textbottom;
+    this.text1 = text1;
+    this.text2 = text2;
+    this.text3 = text3;
     this.img = img;
     this.privat = privat;
     this.user = user;
     this.copy = copy;
     this.font = font;
+    this.size = size;
     this.color = color;
   }
 

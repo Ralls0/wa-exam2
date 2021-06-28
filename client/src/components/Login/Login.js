@@ -71,7 +71,7 @@ function LoginForm(props) {
         </Grid>
       </motion.div>
       <Grid container justify="center" alignItems="center" spacing={3}>
-        <Grid item spacing={3}>
+        <Grid item>
           {errorMessage ? (
             <Collapse in={open}>
               <Alert
@@ -105,11 +105,11 @@ function LoginForm(props) {
         transition={{ delay: 0.5, type: "spring", stiffness: 50, duration: 1 }}
       >
         <Grid container justify="center" alignItems="stretch" spacing={3}>
-          <Grid item spacing={3}>
+          <Grid item>
             <FormControl variant="outlined">
               <InputLabel htmlFor="email">Email</InputLabel>
               <OutlinedInput
-                fullWidth="true"
+                fullWidth={true}
                 id="email"
                 type="email"
                 value={username}
@@ -127,11 +127,11 @@ function LoginForm(props) {
           </Grid>
         </Grid>
         <Grid container justify="center" alignItems="stretch" spacing={3}>
-          <Grid item spacing={3}>
+          <Grid item>
             <FormControl variant="outlined">
               <InputLabel htmlFor="password">Password</InputLabel>
               <OutlinedInput
-                fullWidth="true"
+                fullWidth={true}
                 id="password"
                 type={showPassword ? "text" : "password"}
                 value={password}
@@ -158,7 +158,7 @@ function LoginForm(props) {
         </Grid>
       </motion.div>
       <Grid container justify="center" spacing={3}>
-        <Grid item spacing={3}>
+        <Grid item>
           <motion.div
             initial={{ x: "-100vw" }}
             animate={{ x: 0 }}

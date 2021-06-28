@@ -21,14 +21,24 @@ function FormGenerator(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [open, setOpen] = useState(true);
   const [privat, setPrivat] = useState(props.proivat || "public");
+  const [textFields, setTextFields] = useState(1);
 
   useEffect(() => {
-    if(props.images.top !== 1) props.handleText("", "top");
-    if(props.images.center !== 1) props.handleText("", "center");
-    if(props.images.bottom !== 1) props.handleText("", "bottom");
-  }, [props.images])
-
-
+    let cnt = 0;
+    cnt += props.images.tl;
+    cnt += props.images.tc;
+    cnt += props.images.tr;
+    cnt += props.images.ml;
+    cnt += props.images.mc;
+    cnt += props.images.mr;
+    cnt += props.images.bl;
+    cnt += props.images.bc;
+    cnt += props.images.br;
+    setTextFields(cnt);
+    props.handleText("", "text1");
+    props.handleText("", "text2");
+    props.handleText("", "text3");
+  }, [props.images]);
 
   const handleChange = (event) => {
     setPrivat(event.target.value);
@@ -102,11 +112,11 @@ function FormGenerator(props) {
           }}
         >
           <Grid container justify="center" alignItems="stretch" spacing={6}>
-            <Grid item spacing={6}>
+            <Grid item>
               <FormControl variant="outlined">
                 <InputLabel htmlFor="email">Title</InputLabel>
                 <OutlinedInput
-                  fullWidth="true"
+                  fullWidth={true}
                   id="text"
                   type="text"
                   value={props.title}
@@ -143,9 +153,13 @@ function FormGenerator(props) {
               </InputLabel>
               <NativeSelect
                 id="fonts"
-                value={props.font}
+                value={props.font.font}
                 onChange={(event) => {
-                  props.handleFont(event.target.value);
+                  props.handleFont(
+                    props.fonts.filter((f) => {
+                      return f.font === event.target.value;
+                    })[0]
+                  );
                 }}
               >
                 {props.fonts.map((font) => {
@@ -215,49 +229,58 @@ function FormGenerator(props) {
           >
             <Grid item>
               <FormControl variant="outlined">
-                <InputLabel htmlFor="email">Text Top</InputLabel>
+                <InputLabel htmlFor="email">Text 1</InputLabel>
                 <OutlinedInput
-                  disabled={props.images.top !== 1}
-                  fullWidth="true"
+                  disabled={textFields < 1}
+                  fullWidth={true}
                   id="text"
                   type="text"
-                  value={props.text.top}
-                  onChange={(e) => props.handleText(e.target.value, "top")}
+                  value={props.text.text1}
+                  onChange={(e) => props.handleText(e.target.value, "text1")}
                   secondary
                   classes={outlinedInputClasses}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.slice(0, 60);
+                  }}
                   labelWidth={100}
                 />
               </FormControl>
             </Grid>
             <Grid item>
               <FormControl variant="outlined">
-                <InputLabel htmlFor="email">Text Center</InputLabel>
+                <InputLabel htmlFor="email">Text 2</InputLabel>
                 <OutlinedInput
-                  disabled={props.images.center !== 1}
-                  fullWidth="true"
+                  disabled={textFields < 2}
+                  fullWidth={true}
                   id="text"
                   type="text"
-                  value={props.text.center}
-                  onChange={(e) => props.handleText(e.target.value, "center")}
+                  value={props.text.text2}
+                  onChange={(e) => props.handleText(e.target.value, "text2")}
                   secondary
                   classes={outlinedInputClasses}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.slice(0, 60);
+                  }}
                   labelWidth={100}
                 />
               </FormControl>
             </Grid>
             <Grid item>
               <FormControl variant="outlined">
-                <InputLabel htmlFor="email">Text Bottom</InputLabel>
+                <InputLabel htmlFor="email">Text 3</InputLabel>
                 <OutlinedInput
-                  disabled={props.images.bottom !== 1}
-                  fullWidth="true"
+                  disabled={textFields < 3}
+                  fullWidth={true}
                   id="text"
                   type="text"
-                  value={props.text.bottom}
-                  onChange={(e) => props.handleText(e.target.value, "bottom")}
+                  value={props.text.text3}
+                  onChange={(e) => props.handleText(e.target.value, "text3")}
                   secondary
                   classes={outlinedInputClasses}
                   labelWidth={100}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.slice(0, 60);
+                  }}
                 />
               </FormControl>
             </Grid>

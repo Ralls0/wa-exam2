@@ -5,16 +5,28 @@
     constructor(
       id,
       img,
-      top,
-      center,
-      bottom,
+      tl,
+      tc,
+      tr,
+      ml,
+      mc,
+      mr,
+      bl,
+      bc,
+      br,
     ) {
       this.id = id;
       this.code = id;
       this.img = img;
-      this.top = top;
-      this.center = center;
-      this.bottom = bottom;
+      this.tl = tl;
+      this.tc = tc;
+      this.tr = tr;
+      this.ml = ml;
+      this.mc = mc;
+      this.mr = mr;
+      this.bl =bl;
+      this.bc =bc;
+      this.br =br;
     }
   
     /**

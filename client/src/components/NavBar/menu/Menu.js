@@ -22,7 +22,7 @@ function Menu(props) {
           spacing={3}
         >
           <Grid item>
-            <Link exact to="/" onClick={() => props.handleMenu('/')} className={classes.link}>
+            <Link to="/" onClick={() => props.handleMenu('/')} className={classes.link}>
               <Typography variant="h5" className={props.menu==='/'?classes.active:classes.menu}>
                 Home
               </Typography>
