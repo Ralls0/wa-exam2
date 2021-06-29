@@ -53,33 +53,20 @@ function App() {
   };
 
   useEffect(() => {
-    if (loggedIn) {
-      const checkAuth = async () => {
-        try {
-          const user = await API.getUserInfo();
-          setUserInfo(user);
-          setLoggedIn(true);
-          setDirty(true);
-        } catch (err) {
-          handleErrors(err.error);
-          console.error(err.error);
-        }
-      };
-      checkAuth();
-    }
-  }, [loggedIn]);
-
-  useEffect(() => {
-    const getMemes = async () => {
-      if (loggedIn) {
-        const ms = await API.getAllMemes();
-        setMemes(ms);
-      } else {
-        const ms = await API.getPublicMemes();
-        setMemes(ms);
+    const checkAuth = async () => {
+      try {
+        const user = await API.getUserInfo();
+        setUserInfo(user);
+        setLoggedIn(true);
+      } catch (err) {
+        handleErrors(err.error);
+        console.error(err.error);
       }
     };
+    checkAuth();
+  }, []);
 
+  useEffect(() => {
     const getAllImg = async () => {
       const is = await API.getInfoImages();
       setImgs(is);
@@ -107,16 +94,32 @@ function App() {
       handleErrors(err);
       console.error(err);
     });
+  }, []);
 
-    getMemes().catch((err) => {
-      setMessage({
-        msg: "Impossible to load memes! Please, try again later...",
-        type: "danger",
+  useEffect(() => {
+    const getMemes = async () => {
+      if (loggedIn) {
+        const ms = await API.getAllMemes();
+        setMemes(ms);
+      } else {
+        const ms = await API.getPublicMemes();
+        setMemes(ms);
+      }
+    };
+
+    getMemes()
+      .then(() => {
+        setDirty(false);
+      })
+      .catch((err) => {
+        setMessage({
+          msg: "Impossible to load memes! Please, try again later...",
+          type: "danger",
+        });
+        handleErrors(err);
+        console.error(err);
       });
-      handleErrors(err);
-      console.error(err);
-    });
-  }, [loggedIn, memes.length]);
+  }, [loggedIn, dirty]);
 
   const handleErrors = (err) => {
     if (err.errors)
@@ -129,9 +132,26 @@ function App() {
     setDirty(true);
   };
 
+  const deleteMeme = (memeId) => {
+    // temporary set the deleted item as "in progress"
+    setMemes((oldMemes) => {
+      return oldMemes.map((ex) => {
+        if (ex.id === memeId) return { ...ex, status: "deleted" };
+        else return ex;
+      });
+    });
+
+    API.deleteMeme(memeId)
+      .then(() => {
+        setDirty(true);
+      })
+      .catch((err) => handleErrors(err));
+  };
+
   const doLogIn = async (credentials) => {
     try {
       const user = await API.logIn(credentials);
+      setUserInfo(user);
       setLoggedIn(true);
       setMenu("/");
       setMessage({ msg: `Welcome, ${user}!`, type: "success" });
@@ -175,7 +195,7 @@ function App() {
                       {!loggedIn ? <Redirect to="/login" /> : <Generator />}
                     </Route>
                     <Route exact path="/">
-                      <MainContent memes={memes} />
+                      <MainContent memes={memes} deleteMeme={deleteMeme}/>
                     </Route>
                     <Route path="/pino">
                       <NotFound />

@@ -40,7 +40,7 @@ function CardMeme(props) {
   return (
     <Card onClick={toggleOpen} className={classes.cardMemeContainer}>
       <CardContent>
-        <InfoMeme meme={props.meme} owner={owner} logged={logged}/>
+        <InfoMeme meme={props.meme} owner={owner} logged={logged} deleteMeme={props.deleteMeme}/>
         <AnimatePresence>
           {isOpen && (
             <Content
@@ -60,6 +60,7 @@ function CardMeme(props) {
 function InfoMeme(props) {
   const handleDeleteClick = (event) => {
     event.stopPropagation();
+    props.deleteMeme(props.meme.id)
   };
   const handleCopyClick = (event) => {
     event.stopPropagation();

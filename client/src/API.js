@@ -106,6 +106,24 @@ function addMeme(meme) {
   });
 }
 
+function deleteMeme(memeId) {
+  // call: DELETE /api/memes/:id
+  return new Promise((resolve, reject) => {
+    fetch(BASEURL + '/memes/' + memeId, {
+      method: 'DELETE',
+    }).then((response) => {
+      if (response.ok) {
+        resolve(null);
+      } else {
+        // analyze the cause of error
+        response.json()
+          .then((message) => { reject(message); }) // error message in the response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+        }
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+  });
+}
+
 async function logIn(credentials) {
   let response = await fetch("/api/sessions", {
     method: "POST",
@@ -148,6 +166,7 @@ const API = {
   getInfoImages,
   getImage,
   addMeme,
+  deleteMeme,
   logIn,
   logOut,
   getUserInfo,

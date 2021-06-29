@@ -28,7 +28,7 @@ function MainContent(props) {
               >
                 {props.memes &&
                   props.memes.map((meme) => (
-                    <CardMeme key={meme.id} meme={meme} img={meme.img} />
+                    <CardMeme key={meme.id} meme={meme} img={meme.img} deleteMeme={props.deleteMeme}/>
                   ))}
               </motion.div>
             </AnimateSharedLayout>

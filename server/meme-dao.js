@@ -186,3 +186,17 @@ exports.createMeme = (meme) => {
     );
   });
 };
+
+// delete an existing meme
+exports.deleteMeme = (memeId, userId) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'DELETE FROM memes WHERE id = ? AND user = ?';
+    db.run(sql, [memeId, userId], (err) => {
+      if (err) {
+        reject(err);
+        return;
+      } else
+        resolve(null);
+    });
+  });
+}

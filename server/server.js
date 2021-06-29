@@ -154,6 +154,16 @@ app.post('/api/memes', isLoggedIn, [
   }
 });
 
+// DELETE /api/memes/<id>
+app.delete('/api/memes/:id', isLoggedIn, async (req, res) => {
+  try {
+    await memeDao.deleteMeme(req.params.id, req.user.id);
+    res.status(204).end();
+  } catch(err) {
+    res.status(503).json({ error: `Database error during the deletion of meme ${req.params.id}.`});
+  }
+});
+
 /*** Users APIs ***/
 /** login **/
 app.post("/api/sessions", function (req, res, next) {
