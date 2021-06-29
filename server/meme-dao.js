@@ -7,7 +7,7 @@ const { db } = require("./db");
 exports.listMemes = () => {
   return new Promise((resolve, reject) => {
     const sql =
-      "SELECT m.id, m.title, m.text1, m.text2, m.text3, m.img, m.private, u.name AS user, m.copy, f.family AS font, f.size, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id";
+      "SELECT m.id, m.title, m.text1, m.text2, m.text3, m.img, m.private, m.user AS userID, u.name AS user, m.copy, f.family AS font, f.size, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id";
     db.all(sql, [], (err, rows) => {
       if (err) {
         reject(err);
@@ -21,6 +21,7 @@ exports.listMemes = () => {
         text3: e.text3,
         img: e.img,
         privat: e.private,
+        userID: e.userID,
         user: e.user,
         copy: e.copy,
         font: e.font,
@@ -36,7 +37,7 @@ exports.listMemes = () => {
 exports.listPublicMemes = () => {
   return new Promise((resolve, reject) => {
     const sql =
-      "SELECT m.id, m.title, m.text1, m.text2, m.text3, m.img, m.private, u.name AS user, m.copy, f.family AS font, f.size, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id AND m.private = 0";
+      "SELECT m.id, m.title, m.text1, m.text2, m.text3, m.img, m.private, m.user AS userID, u.name AS user, m.copy, f.family AS font, f.size, m.color FROM memes m, users u, fonts f WHERE m.user = u.id AND m.font = f.id AND m.private = 0";
     db.all(sql, [], (err, rows) => {
       if (err) {
         reject(err);
@@ -50,6 +51,7 @@ exports.listPublicMemes = () => {
         text3: e.text3,
         img: e.img,
         privat: e.private,
+        userID: e.userID,
         user: e.user,
         copy: e.copy,
         font: e.font,

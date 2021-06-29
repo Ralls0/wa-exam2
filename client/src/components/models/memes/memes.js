@@ -10,6 +10,7 @@ class Meme {
     text3,
     img,
     privat,
+    userID,
     user,
     copy,
     font,
@@ -24,6 +25,7 @@ class Meme {
     this.text3 = text3;
     this.img = img;
     this.privat = privat;
+    this.userID = userID;
     this.user = user;
     this.copy = copy;
     this.font = font;

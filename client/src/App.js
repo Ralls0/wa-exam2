@@ -17,7 +17,6 @@ import {
   MemeFonts,
 } from "./createContexts";
 
-
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -145,6 +144,7 @@ function App() {
   const doLogOut = async () => {
     await API.logOut();
     setLoggedIn(false);
+    setUserInfo({});
     localStorage.clear();
     setMemes([]);
   };
@@ -154,36 +154,36 @@ function App() {
       <Switch>
         <>
           <UserInfoMode.Provider value={userInfo}>
-            <ThemeProvider theme={theme}>
-              <LoggedInMode.Provider value={loggedIn}>
+            <LoggedInMode.Provider value={loggedIn}>
+              <ThemeProvider theme={theme}>
                 <NavigationBar
                   doLogIn={doLogIn}
                   doLogOut={doLogOut}
                   menu={menu}
                   handleMenu={handleMenu}
                 />
-              </LoggedInMode.Provider>
-              <MemeImages.Provider value={imgs}>
-                <MemeFonts.Provider value={fonts}>
-                  <Route exact path="/login">
-                    {loggedIn ? (
-                      <Redirect to="/" />
-                    ) : (
-                      <Login doLogIn={doLogIn} />
-                    )}
-                  </Route>
-                  <Route exact path="/generator">
-                    {!loggedIn ? <Redirect to="/login" /> : <Generator />}
-                  </Route>
-                  <Route exact path="/">
-                    <MainContent memes={memes} />
-                  </Route>
-                  <Route path="/pino">
-                    <NotFound />
-                  </Route>
-                </MemeFonts.Provider>
-              </MemeImages.Provider>
-            </ThemeProvider>
+                <MemeImages.Provider value={imgs}>
+                  <MemeFonts.Provider value={fonts}>
+                    <Route exact path="/login">
+                      {loggedIn ? (
+                        <Redirect to="/" />
+                      ) : (
+                        <Login doLogIn={doLogIn} />
+                      )}
+                    </Route>
+                    <Route exact path="/generator">
+                      {!loggedIn ? <Redirect to="/login" /> : <Generator />}
+                    </Route>
+                    <Route exact path="/">
+                      <MainContent memes={memes} />
+                    </Route>
+                    <Route path="/pino">
+                      <NotFound />
+                    </Route>
+                  </MemeFonts.Provider>
+                </MemeImages.Provider>
+              </ThemeProvider>
+            </LoggedInMode.Provider>
           </UserInfoMode.Provider>
         </>
       </Switch>

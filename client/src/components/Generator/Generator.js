@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import { Slider } from "../Slider/Slider";
 import { MemeImg } from "../CardMeme/CardMeme";
 import { FormGenerator } from "./FormGenerator/FormGenerator";
+import { useStyles } from "./styles";
 
 function Generator(props) {
   const [title, setTitle] = useState("");
@@ -16,6 +17,8 @@ function Generator(props) {
 
   const fonts = useContext(MemeFonts);
   const imgs = useContext(MemeImages);
+
+  const classes = useStyles();
 
   useEffect(() => {
     setFont(fonts[0]);
@@ -52,7 +55,7 @@ function Generator(props) {
 
   return (
     <Grid container direction="row" justify="space-around" alignItems="center" spacing={4}>
-      <Grid item>
+      <Grid item sm={6} lg={6} md={6}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>
             <MemeImg
@@ -61,6 +64,7 @@ function Generator(props) {
               font={font.font}
               size={font.size}
               color={color}
+              className={classes.imgContent}
             />
           </Grid>
           <Grid item>
@@ -69,7 +73,7 @@ function Generator(props) {
         </Grid>
       </Grid>
 
-      <Grid item>
+      <Grid item sm={6} lg={6} md={6}>
         <FormGenerator
           images={img}
           color={color}
