@@ -171,42 +171,43 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Switch>
-        <>
-          <UserInfoMode.Provider value={userInfo}>
-            <LoggedInMode.Provider value={loggedIn}>
-              <ThemeProvider theme={theme}>
-                <NavigationBar
-                  doLogIn={doLogIn}
-                  doLogOut={doLogOut}
-                  menu={menu}
-                  handleMenu={handleMenu}
-                />
-                <MemeImages.Provider value={imgs}>
-                  <MemeFonts.Provider value={fonts}>
-                    <Route exact path="/login">
+      <UserInfoMode.Provider value={userInfo}>
+        <LoggedInMode.Provider value={loggedIn}>
+          <ThemeProvider theme={theme}>
+            <NavigationBar
+              doLogIn={doLogIn}
+              doLogOut={doLogOut}
+              menu={menu}
+              handleMenu={handleMenu}
+            />
+            <MemeImages.Provider value={imgs}>
+              <MemeFonts.Provider value={fonts}>
+                <Switch>
+                  <>
+                    <Route name="login" path="/login">
                       {loggedIn ? (
                         <Redirect to="/" />
                       ) : (
                         <Login doLogIn={doLogIn} />
                       )}
                     </Route>
-                    <Route exact path="/generator">
+                    <Route name="generator" path="/generator">
                       {!loggedIn ? <Redirect to="/login" /> : <Generator />}
                     </Route>
-                    <Route exact path="/">
-                      <MainContent memes={memes} deleteMeme={deleteMeme}/>
+                    <Route name="app" path="/" exact>
+                      <MainContent memes={memes} deleteMeme={deleteMeme} />
                     </Route>
-                    <Route path="/pino">
+                    <Route path="/notfond">
                       <NotFound />
                     </Route>
-                  </MemeFonts.Provider>
-                </MemeImages.Provider>
-              </ThemeProvider>
-            </LoggedInMode.Provider>
-          </UserInfoMode.Provider>
-        </>
-      </Switch>
+                    <Redirect from="/*" to="/notfond" />
+                  </>
+                </Switch>
+              </MemeFonts.Provider>
+            </MemeImages.Provider>
+          </ThemeProvider>
+        </LoggedInMode.Provider>
+      </UserInfoMode.Provider>
     </BrowserRouter>
   );
 }
