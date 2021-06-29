@@ -51,7 +51,7 @@ function Generator(props) {
   };
 
   return (
-    <Grid container direction="row" justify="space-around" alignItems="center">
+    <Grid container direction="row" justify="space-around" alignItems="center" spacing={4}>
       <Grid item>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>

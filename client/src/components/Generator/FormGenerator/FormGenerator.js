@@ -64,9 +64,9 @@ function FormGenerator(props) {
     <Grid
       container
       direction="column"
-      justify="center"
+      justify="space-evenly"
       alignItems="center"
-      spacing={5}
+      spacing={4}
       className={classes.container}
     >
       <Grid item>
@@ -117,11 +117,10 @@ function FormGenerator(props) {
                 <InputLabel htmlFor="email">Title</InputLabel>
                 <OutlinedInput
                   fullWidth={true}
-                  id="text"
+                  id="title"
                   type="text"
                   value={props.title}
                   onChange={(e) => props.handleTitle(e.target.value)}
-                  secondary
                   classes={outlinedInputClasses}
                   labelWidth={100}
                 />
@@ -233,14 +232,13 @@ function FormGenerator(props) {
                 <OutlinedInput
                   disabled={textFields < 1}
                   fullWidth={true}
-                  id="text"
+                  id="text1"
                   type="text"
                   value={props.text.text1}
                   onChange={(e) => props.handleText(e.target.value, "text1")}
-                  secondary
                   classes={outlinedInputClasses}
                   onInput={(e) => {
-                    e.target.value = e.target.value.slice(0, 60);
+                    e.target.value = e.target.value.slice(0, 40);
                   }}
                   labelWidth={100}
                 />
@@ -252,14 +250,13 @@ function FormGenerator(props) {
                 <OutlinedInput
                   disabled={textFields < 2}
                   fullWidth={true}
-                  id="text"
+                  id="text2"
                   type="text"
                   value={props.text.text2}
                   onChange={(e) => props.handleText(e.target.value, "text2")}
-                  secondary
                   classes={outlinedInputClasses}
                   onInput={(e) => {
-                    e.target.value = e.target.value.slice(0, 60);
+                    e.target.value = e.target.value.slice(0, 40);
                   }}
                   labelWidth={100}
                 />
@@ -271,15 +268,14 @@ function FormGenerator(props) {
                 <OutlinedInput
                   disabled={textFields < 3}
                   fullWidth={true}
-                  id="text"
+                  id="text3"
                   type="text"
                   value={props.text.text3}
                   onChange={(e) => props.handleText(e.target.value, "text3")}
-                  secondary
                   classes={outlinedInputClasses}
                   labelWidth={100}
                   onInput={(e) => {
-                    e.target.value = e.target.value.slice(0, 60);
+                    e.target.value = e.target.value.slice(0, 40);
                   }}
                 />
               </FormControl>

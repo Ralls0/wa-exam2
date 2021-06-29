@@ -8,6 +8,7 @@ import API from "./API";
 import NavigationBar from "./components/NavBar/Navbar";
 import { Login } from "./components/Login/Login";
 import { Generator } from "./components/Generator/Generator";
+import { NotFound } from "./components/NotFound/NotFound";
 import { MainContent } from "./components/MainContent/MainContent";
 import {
   LoggedInMode,
@@ -15,6 +16,7 @@ import {
   MemeImages,
   MemeFonts,
 } from "./createContexts";
+
 
 const theme = createMuiTheme({
   palette: {
@@ -163,18 +165,21 @@ function App() {
               </LoggedInMode.Provider>
               <MemeImages.Provider value={imgs}>
                 <MemeFonts.Provider value={fonts}>
-                  <Route path="/login">
+                  <Route exact path="/login">
                     {loggedIn ? (
                       <Redirect to="/" />
                     ) : (
                       <Login doLogIn={doLogIn} />
                     )}
                   </Route>
-                  <Route path="/generator">
+                  <Route exact path="/generator">
                     {!loggedIn ? <Redirect to="/login" /> : <Generator />}
                   </Route>
                   <Route exact path="/">
                     <MainContent memes={memes} />
+                  </Route>
+                  <Route path="/pino">
+                    <NotFound />
                   </Route>
                 </MemeFonts.Provider>
               </MemeImages.Provider>

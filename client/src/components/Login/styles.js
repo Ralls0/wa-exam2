@@ -41,6 +41,9 @@ const useOutlinedInputStyles = makeStyles((theme) => ({
   focused: {
     color: theme.palette.secondary.main,
   },
+  notchedOutline: {
+    borderColor: theme.palette.primary.main,
+  },
 }));
 
 export { useStyles, useOutlinedInputStyles };

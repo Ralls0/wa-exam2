@@ -57,13 +57,9 @@ function CardMeme(props) {
 function InfoMeme(props) {
   const classes = useStyles();
   return (
-    <Grid container direction="column" justify="center" alignItems="flex-start">
+    <Grid container direction="column" justify="center" alignitems="flex-start">
       <Grid item>
-        <Typography
-          variant="h6"
-          className={classes.textDarkPurple}
-          gutterBottom
-        >
+        <Typography variant="h6" className={classes.textDarkPurple}>
           {props.title}
         </Typography>
       </Grid>
@@ -71,15 +67,11 @@ function InfoMeme(props) {
         container
         direction="row"
         justify="flex-start"
-        alignItems="flex-start"
+        alignitems="flex-start"
         spacing={2}
       >
         <Grid item>
-          <Typography
-            variant="subtitle1"
-            className={classes.textGreen}
-            gutterBottom
-          >
+          <Typography variant="subtitle1" className={classes.textGreen}>
             By: {props.user}
           </Typography>
         </Grid>
@@ -119,113 +111,90 @@ function Content(props) {
 function MemeImg(props) {
   const classes = useStyles({
     img: props.img.img,
-    color: props.color,
-    font: props.font,
-    size: props.size,
   });
+
   let cnt = 0;
   let txtg = [];
-  txtg.push(props.img.tl);
-  txtg.push(props.img.tc);
-  txtg.push(props.img.tr);
-  txtg.push(props.img.ml);
-  txtg.push(props.img.mc);
-  txtg.push(props.img.mr);
-  txtg.push(props.img.bl);
-  txtg.push(props.img.bc);
-  txtg.push(props.img.br);
+  let tmp = [];
+  tmp.push(props.img.tl);
+  tmp.push(props.img.tc);
+  tmp.push(props.img.tr);
+  txtg.push(tmp);
+  tmp = [];
+  tmp.push(props.img.ml);
+  tmp.push(props.img.mc);
+  tmp.push(props.img.mr);
+  txtg.push(tmp);
+  tmp = [];
+  tmp.push(props.img.bl);
+  tmp.push(props.img.bc);
+  tmp.push(props.img.br);
+  txtg.push(tmp);
+  tmp = 0;
 
-  for (let e of txtg) {
-    if (e === 1) txtg[txtg.indexOf(e)] = props.text[cnt++];
+  for (let r of [0, 1, 2]) {
+    for (let c of [0, 1, 2]) {
+      if (txtg[r][c] === 1) {
+        txtg[r][c] = props.text[cnt++];
+      } else {
+        txtg[r][c] = "";
+      }
+    }
   }
-
   return (
     <Grid
       container
       direction="column"
-      justify="space-evenly"
-      alignItems="center"
+      justify="space-between"
+      alignitems="center"
       spacing={10}
       className={classes.memeimg}
     >
-      <Grid item>
-        <Grid
-          container
-          direction="row"
-          justify="space-evenly"
-          alignItems="center"
-        >
-          <Grid item>
-            {txtg[0] !== 0 && (
-              <Typography className={classes.text}>{txtg[0]}</Typography>
-            )}
-          </Grid>
-          <Grid item>
-            {txtg[1] !== 0 && (
-              <Typography className={classes.text}>{txtg[1]}</Typography>
-            )}
-          </Grid>
-          <Grid item>
-            {txtg[2] !== 0 && (
-              <Typography className={classes.text}>
-                {txtg[2]}
-              </Typography>
-            )}
-          </Grid>
+      {txtg.map((r) => (
+        <Grid key={tmp} item>
+          <RowTypography
+            key={tmp++}
+            texts={r}
+            img={props.img}
+            color={props.color}
+            font={props.font}
+            size={props.size}
+          />
         </Grid>
-      </Grid>
-      <Grid item>
-        <Grid
-          container
-          direction="row"
-          justify="space-evenly"
-          alignItems="center"
-        >
-          <Grid item>
-            {txtg[3] !== 0 && (
-              <Typography className={classes.text}>{txtg[3]}</Typography>
-            )}
-          </Grid>
-          <Grid item>
-            {txtg[4] !== 0 && (
-              <Typography className={classes.text}>{txtg[4]}</Typography>
-            )}
-          </Grid>
-          <Grid item>
-            {txtg[5] !== 0 && (
-              <Typography className={classes.text}>
-                {txtg[5]}
-              </Typography>
-            )}
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item>
-        <Grid
-          container
-          direction="row"
-          justify="space-evenly"
-          alignItems="center"
-        >
-          <Grid item>
-            {txtg[6] !== 0 && (
-              <Typography className={classes.text}>{txtg[6]}</Typography>
-            )}
-          </Grid>
-          <Grid item>
-            {txtg[7] !== 0 && (
-              <Typography className={classes.text}>{txtg[7]}</Typography>
-            )}
-          </Grid>
-          <Grid item>
-            {txtg[8] !== 0 && (
-              <Typography className={classes.text}>
-                {txtg[8]}
-              </Typography>
-            )}
-          </Grid>
-        </Grid>
-      </Grid>
+        ))}
+    </Grid>
+  );
+}
+
+function RowTypography(props) {
+  let cnt = 0;
+  return (
+    <Grid container direction="row" justify="space-between" alignitems="center">
+      {props.texts.map((text) => (
+          <>
+            <ColumnTypography
+              key={cnt++}
+              text={text}
+              img={props.img}
+              color={props.color}
+              font={props.font}
+              size={props.size}
+            />
+          </>
+        ))}
+    </Grid>
+  );
+}
+function ColumnTypography(props) {
+  const classes = useStyles({
+    img: props.img.img,
+    color: props.color,
+    font: props.font,
+    size: props.size,
+  });
+  return (
+    <Grid item lg={3}>
+      <Typography className={classes.textRight}>{props.text}</Typography>
     </Grid>
   );
 }

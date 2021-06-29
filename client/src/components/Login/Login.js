@@ -114,7 +114,6 @@ function LoginForm(props) {
                 type="email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                secondary
                 classes={outlinedInputClasses}
                 endAdornment={
                   <InputAdornment position="end" className={classes.input}>
@@ -136,7 +135,6 @@ function LoginForm(props) {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                secondary
                 classes={outlinedInputClasses}
                 endAdornment={
                   <InputAdornment position="end">

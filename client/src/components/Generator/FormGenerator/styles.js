@@ -2,8 +2,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    maxWidth: "45vw",
     backgroundColor: "#FAEAAC",
-    padding: "3%",
+    padding: "1%",
     borderRadius: "25px",
   },
 }));
@@ -17,6 +18,9 @@ const useOutlinedInputStyles = makeStyles((theme) => ({
     "&:hover $notchedOutline": {
       borderColor: theme.palette.secondary.main,
     },
+    "&:hover": {
+      borderColor: theme.palette.secondary.main,
+    },
     "&$focused $notchedOutline": {
       borderColor: theme.palette.secondary.main,
     },
@@ -26,6 +30,9 @@ const useOutlinedInputStyles = makeStyles((theme) => ({
   },
   focused: {
     color: theme.palette.secondary.main,
+  },
+  notchedOutline: {
+    borderColor: theme.palette.primary.main,
   },
 }));
 
