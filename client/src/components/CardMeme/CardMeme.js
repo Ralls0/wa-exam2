@@ -1,56 +1,40 @@
 import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import Typography from "@material-ui/core/Typography";
-import { IconButton } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import {
+  IconButton,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+} from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import CallSplitSharpIcon from "@material-ui/icons/CallSplitSharp";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { MemeImg } from "../MemeImg/MemeImg";
-import { useStyles } from "./styles";
 import { MemeImages, UserInfoMode, LoggedInMode } from "../../createContexts";
+import { useStyles } from "./styles";
 
 function CardMeme(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [img, setImg] = useState("");
-  const [owner, setOwner] = useState(false);
 
   const classes = useStyles();
-
-  const imgs = useContext(MemeImages);
-  const userInfo = useContext(UserInfoMode);
-  const logged = useContext(LoggedInMode);
-
-  useEffect(() => {
-    if (imgs.length > 0) {
-      let i = imgs.filter((image) => {
-        return image.id === props.img;
-      })[0];
-      setImg(i);
-    }
-    setOwner(userInfo.id === props.meme.userID);
-  }, [imgs, imgs.length, props.img, userInfo, props.meme]);
 
   const toggleOpen = () => setIsOpen((oldIsOpen) => !oldIsOpen);
 
   return (
     <Card onClick={toggleOpen} className={classes.cardMemeContainer}>
       <CardContent>
-        <InfoMeme meme={props.meme} owner={owner} logged={logged} deleteMeme={props.deleteMeme}/>
+        <InfoMeme
+          img={props.img}
+          meme={props.meme}
+          deleteMeme={props.deleteMeme}
+          copyMeme={props.copyMeme}
+        />
         <AnimatePresence>
-          {isOpen && (
-            <Content
-              img={img}
-              font={props.meme.font}
-              size={props.meme.size}
-              color={props.meme.color}
-              text={[props.meme.text1, props.meme.text2, props.meme.text3]}
-            />
-          )}
+          {isOpen && <Content img={props.img} meme={props.meme} />}
         </AnimatePresence>
       </CardContent>
     </Card>
@@ -58,13 +42,21 @@ function CardMeme(props) {
 }
 
 function InfoMeme(props) {
+  const { meme, deleteMeme, copyMeme, img } = props;
+
+  const logged = useContext(LoggedInMode);
+  const userInfo = useContext(UserInfoMode);
+  const owner = userInfo.id === meme.userID;
+
   const handleDeleteClick = (event) => {
     event.stopPropagation();
-    props.deleteMeme(props.meme.id)
+    deleteMeme(meme.id);
   };
   const handleCopyClick = (event) => {
     event.stopPropagation();
+    copyMeme();
   };
+
   const classes = useStyles();
   return (
     <Grid
@@ -75,12 +67,12 @@ function InfoMeme(props) {
     >
       <Grid item>
         <Typography variant="h6" className={classes.textDarkPurple}>
-          {props.meme.title}
+          {meme.title}
         </Typography>
       </Grid>
       <Grid item>
         <IconButton
-          disabled={!props.owner}
+          disabled={!owner}
           className={classes.error}
           onClick={handleDeleteClick}
         >
@@ -96,20 +88,18 @@ function InfoMeme(props) {
       >
         <Grid item>
           <Typography variant="subtitle1" className={classes.textGreen}>
-            By: {props.meme.user}
+            By: {meme.user}
           </Typography>
         </Grid>
         <Grid item>
-          {props.meme.privat ? (
+          {meme.privat ? (
             <LockIcon color="error" />
           ) : (
             <LockOpenIcon color="secondary" />
           )}
         </Grid>
         <Grid item>
-          {props.meme.copy === 1 && (
-            <CallSplitSharpIcon className={classes.copy} />
-          )}
+          {meme.copy === 1 && <CallSplitSharpIcon className={classes.copy} />}
         </Grid>
       </Grid>
       <Grid
@@ -120,31 +110,53 @@ function InfoMeme(props) {
         spacing={2}
       >
         <Grid item>
-        <IconButton disabled={!props.logged} color="primary" onClick={handleCopyClick}>
-            <FileCopyIcon fontSize="inherit" />
-        </IconButton>
+          <IconButton
+            disabled={!logged}
+            color="primary"
+            onClick={handleCopyClick}
+          >
+            <Link
+              to={{
+                pathname: "/generator",
+                state: {
+                  img: img,
+                  copy: true,
+                  diffUser: !owner,
+                  privat: meme.privat,
+                },
+              }}
+            >
+              <FileCopyIcon fontSize="inherit" />
+            </Link>
+          </IconButton>
         </Grid>
-        </Grid>
+      </Grid>
     </Grid>
   );
 }
 
 function Content(props) {
+  const [img, setImg] = useState("");
+  const imgs = useContext(MemeImages);
+
+  useEffect(() => {
+    if (imgs.length > 0) {
+      let i = imgs.filter((image) => {
+        return image.id === props.img;
+      })[0];
+      setImg(i);
+    }
+  }, [imgs, props.img, props.meme.userID]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <MemeImg
-        img={props.img}
-        text={props.text}
-        font={props.font}
-        size={props.size}
-        color={props.color}
-      />
+      <MemeImg img={img} meme={props.meme} />
     </motion.div>
   );
 }
 
-export { CardMeme, MemeImg };
+export { CardMeme };

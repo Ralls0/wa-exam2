@@ -13,7 +13,7 @@ import { useStyles } from "./styles";
 
 export default function NavigationBar(props) {
   const loggedin = useContext(LoggedInMode);
-  const userinfo = useContext(UserInfoMode);
+  const userInfo = useContext(UserInfoMode);
 
   const classes = useStyles();
 
@@ -63,7 +63,7 @@ export default function NavigationBar(props) {
                   >
                     <Grid item>
                       <Typography variant="h5" className={classes.text}>
-                        Welcome {userinfo.name}!
+                        Welcome {userInfo.name}!
                       </Typography>
                     </Grid>
                     <Grid item>

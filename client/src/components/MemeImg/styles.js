@@ -17,10 +17,8 @@ function calculateNegativeColor(color) {
 const useStyles = makeStyles((theme) => ({
   table: {
     margin: "3%",
-    minWidth: "45vmax",
-    maxWidth: "45vmax",
-    minHeight: "55vmin",
-    maxHeight: "55vmin",
+    width: "45vmax",
+    height: "55vmin",
     backgroundImage: (props) => `url(${props.img})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",

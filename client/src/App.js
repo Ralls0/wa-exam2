@@ -48,10 +48,6 @@ function App() {
   const [imgs, setImgs] = useState([]);
   const [menu, setMenu] = useState("/");
 
-  const handleMenu = (path) => {
-    setMenu(path);
-  };
-
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -121,6 +117,10 @@ function App() {
       });
   }, [loggedIn, dirty]);
 
+  const handleMenu = (path) => {
+    setMenu(path);
+  };
+
   const handleErrors = (err) => {
     if (err.errors)
       setMessage({
@@ -132,8 +132,21 @@ function App() {
     setDirty(true);
   };
 
+  const copyMeme = () => {
+    setMenu("/generator");
+  };
+
+  const selectImg = (imgId) => {
+    if (imgs.length > 0) {
+      return (imgs.filter((image) => {
+        return image.id === imgId;
+      })[0]
+      );
+  }
+  return -1;
+}
+
   const deleteMeme = (memeId) => {
-    // temporary set the deleted item as "in progress"
     setMemes((oldMemes) => {
       return oldMemes.map((ex) => {
         if (ex.id === memeId) return { ...ex, status: "deleted" };
@@ -183,25 +196,47 @@ function App() {
             <MemeImages.Provider value={imgs}>
               <MemeFonts.Provider value={fonts}>
                 <Switch>
-                  <>
-                    <Route name="login" path="/login">
-                      {loggedIn ? (
-                        <Redirect to="/" />
+                  <Route name="login" path="/login">
+                    {loggedIn ? (
+                      <Redirect to="/" />
+                    ) : (
+                      <Login doLogIn={doLogIn} />
+                    )}
+                  </Route>
+                  <Route
+                    name="generator"
+                    path="/generator"
+                    render={({ location }) => {
+                      if (location.state) {
+                        location.state.privat = location.state.privat === 0 ? "public" : "private";
+                        location.state.img = selectImg(location.state.img);
+                      }
+                        return loggedIn ? (
+                        <Generator
+                          img={location.state ? location.state.img : false}
+                          copy={location.state ? location.state.copy : false}
+                          diffUser={
+                            location.state ? location.state.diffUser : false
+                          }
+                          privat={
+                            location.state ? location.state.privat : false
+                          }
+                        />
                       ) : (
-                        <Login doLogIn={doLogIn} />
-                      )}
-                    </Route>
-                    <Route name="generator" path="/generator">
-                      {!loggedIn ? <Redirect to="/login" /> : <Generator />}
-                    </Route>
-                    <Route name="app" path="/" exact>
-                      <MainContent memes={memes} deleteMeme={deleteMeme} />
-                    </Route>
-                    <Route path="/notfond">
-                      <NotFound />
-                    </Route>
-                    <Redirect from="/*" to="/notfond" />
-                  </>
+                        <Redirect to="/login" />
+                      );
+                    }}
+                  />
+                  <Route name="app" path="/" exact>
+                    <MainContent
+                      memes={memes}
+                      deleteMeme={deleteMeme}
+                      copyMeme={copyMeme}
+                    />
+                  </Route>
+                  <Route>
+                    <NotFound />
+                  </Route>
                 </Switch>
               </MemeFonts.Provider>
             </MemeImages.Provider>

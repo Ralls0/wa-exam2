@@ -2,41 +2,29 @@ import React from "react";
 import { useStyles } from "./styles";
 
 function MemeImg(props) {
-  const classes = useStyles({
-    img: props.img.img,
+
+  const { img, meme } = props;
+
+  const text = [meme.text1, meme.text2, meme.text3];
+  let cnt = 0;
+  let txtg = [
+    [img.tl, img.tc, img.tr],
+    [img.ml, img.mc, img.mr],
+    [img.bl, img.bc, img.br],
+  ];
+  let k = 0;
+
+  txtg = txtg.map((r) => {
+    return r.map((c) => {
+      if (c === 1) c = text[cnt++];
+      else c = "";
+      return c;
+    });
   });
 
-  let cnt = 0;
-  let txtg = [];
-  let tmp = [];
-
-  tmp.push(props.img.tl);
-  tmp.push(props.img.tc);
-  tmp.push(props.img.tr);
-  txtg.push(tmp);
-  tmp = [];
-  tmp.push(props.img.ml);
-  tmp.push(props.img.mc);
-  tmp.push(props.img.mr);
-  txtg.push(tmp);
-  tmp = [];
-  tmp.push(props.img.bl);
-  tmp.push(props.img.bc);
-  tmp.push(props.img.br);
-  txtg.push(tmp);
-  tmp = 0;
-
-  console.log(txtg)
-
-  for (let r of [0, 1, 2]) {
-    for (let c of [0, 1, 2]) {
-      if (txtg[r][c] === 1) {
-        txtg[r][c] = props.text[cnt++];
-      } else {
-        txtg[r][c] = "";
-      }
-    }
-  }
+  const classes = useStyles({
+    img: img.img,
+  });
 
   return (
     <>
@@ -44,12 +32,11 @@ function MemeImg(props) {
         <tbody>
           {txtg.map((row) => (
             <RowTypography
-              key={tmp++}
+              key={k++}
               texts={row}
-              img={props.img}
-              color={props.color}
-              font={props.font}
-              size={props.size}
+              color={meme.color}
+              font={meme.font}
+              size={meme.size}
             />
           ))}
         </tbody>

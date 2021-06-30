@@ -1,29 +1,35 @@
-import React, { useState, useContext, useEffect } from "react";
-import { MemeImages, MemeFonts } from "../../createContexts";
-import Grid from "@material-ui/core/Grid";
+import React, { useState, useContext } from "react";
+import { Grid } from "@material-ui/core";
 import { Slider } from "../Slider/Slider";
-import { MemeImg } from "../CardMeme/CardMeme";
+import { MemeImg } from "../MemeImg/MemeImg";
 import { FormGenerator } from "./FormGenerator/FormGenerator";
+import { MemeImages, MemeFonts } from "../../createContexts";
 import { useStyles } from "./styles";
-
+/**
+ * 
+ * @param {*} props 
+ * If receve: 
+ * + {img}
+ * + {copy}
+ * + {diffUser}
+ * + {privat}
+ * then a copy is performed
+ * @returns 
+ */
 function Generator(props) {
+
+  const fonts = useContext(MemeFonts);
+  const imgs = useContext(MemeImages);
+
   const [title, setTitle] = useState("");
   const [text1, setText1] = useState("");
   const [text2, setText2] = useState("");
   const [text3, setText3] = useState("");
   const [color, setColor] = useState("#FFFFFF");
-  const [img, setImg] = useState("");
-  const [font, setFont] = useState("");
-
-  const fonts = useContext(MemeFonts);
-  const imgs = useContext(MemeImages);
+  const [img, setImg] = useState(props.img ? props.img : imgs[0]);
+  const [font, setFont] = useState(fonts[0]);
 
   const classes = useStyles();
-
-  useEffect(() => {
-    setFont(fonts[0]);
-    setImg(props.img ? props.img : imgs[0]);
-  }, []);
 
   const handleText = (text, position) => {
     if (position === "text1") {
@@ -60,10 +66,14 @@ function Generator(props) {
           <Grid item>
             <MemeImg
               img={img}
-              text={[text1, text2, text3 ]}
-              font={font.font}
-              size={font.size}
-              color={color}
+              meme={{
+                font: font.font,
+                size: font.size,
+                color: color,
+                text1: text1,
+                text2: text2,
+                text3: text3,
+              }}
               className={classes.imgContent}
             />
           </Grid>
@@ -75,7 +85,7 @@ function Generator(props) {
 
       <Grid item sm={6} lg={6} md={6}>
         <FormGenerator
-          images={img}
+          imgs={img}
           color={color}
           font={font}
           fonts={fonts}
@@ -85,7 +95,7 @@ function Generator(props) {
           handleColor={handleColor}
           handleText={handleText}
           handleFont={handleFont}
-          privat={props.copy && props.diffUser ? props.privat : undefined}
+          privatBlock={(props.copy && props.diffUser) ? props.privat : undefined}
           copy={props.copy}
         />
       </Grid>

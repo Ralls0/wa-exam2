@@ -34,6 +34,7 @@ const useOutlinedInputStyles = makeStyles((theme) => ({
   notchedOutline: {
     borderColor: theme.palette.primary.main,
   },
+  error: {},
 }));
 
 export { useStyles, useOutlinedInputStyles };
