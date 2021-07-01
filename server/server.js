@@ -131,13 +131,11 @@ app.get("/api/fonts", async (req, res) => {
 
 // POST /api/memes
 app.post('/api/memes', isLoggedIn, [
-  check('title').not().notEmpty(),
-  check('img').not(),
-  check('privat').not(),
-  check('user').not(),
-  check('copy').not(),
-  check('font').not(),
-  check('color').isLength({min: 7, max: 7}),
+  check('title').notEmpty().isString(),
+  check('user').isInt(),
+  check('copy').isInt({min: 0, max: 1}),
+  check('font').isInt(),
+  check('color').notEmpty().isString().isLength({min: 7, max: 7}),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

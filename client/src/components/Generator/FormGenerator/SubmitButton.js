@@ -10,7 +10,7 @@ function SubmitButton(props) {
     <Grid container justify="center">
       <Grid item>
         <motion.div
-          initial={{ x: "-100vw" }}
+          initial={{ x: "100vw" }}
           animate={{ x: 0 }}
           transition={{
             delay: 0.5,

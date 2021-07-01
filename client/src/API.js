@@ -79,9 +79,9 @@ function addMeme(meme) {
         text3: meme.text3,
         img: meme.img,
         privat: meme.privat,
-        user: meme.user,
+        user: meme.userID,
         copy: meme.copy,
-        font: meme.font,
+        font: meme.fontID,
         color: meme.color,
       }),
     })

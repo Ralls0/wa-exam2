@@ -7,7 +7,7 @@ function ColorFont(props) {
 
   return (
     <motion.div
-      initial={{ x: "100vw" }}
+      initial={{ x: "-100vw" }}
       animate={{ x: 0 }}
       transition={{
         delay: 0.5,

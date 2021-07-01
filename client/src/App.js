@@ -146,6 +146,26 @@ function App() {
   return -1;
 }
 
+const getLastMemeId = () => {
+  let max = -1;
+  memes.forEach(m => {
+    max = Math.max(max, m.id);
+  })
+  return max;
+}
+
+const addMeme = (meme) => {
+  meme.id = getLastMemeId() + 1;
+  meme.status = 'added';
+  setMemes(oldMemes => [...oldMemes, meme]);
+
+  API.addMeme(meme)
+    .then(() => {
+      setMenu("/");
+      setDirty(true);
+    }).catch(err => handleErrors(err) );
+}
+
   const deleteMeme = (memeId) => {
     setMemes((oldMemes) => {
       return oldMemes.map((ex) => {
@@ -208,19 +228,19 @@ function App() {
                     path="/generator"
                     render={({ location }) => {
                       if (location.state) {
-                        location.state.privat = location.state.privat === 0 ? "public" : "private";
                         location.state.img = selectImg(location.state.img);
                       }
                         return loggedIn ? (
                         <Generator
                           img={location.state ? location.state.img : false}
-                          copy={location.state ? location.state.copy : false}
+                          copy={location.state ? location.state.copy : 0}
                           diffUser={
                             location.state ? location.state.diffUser : false
                           }
-                          privat={
-                            location.state ? location.state.privat : false
+                          meme={
+                            location.state ? location.state.meme : false
                           }
+                          addMeme={addMeme}
                         />
                       ) : (
                         <Redirect to="/login" />

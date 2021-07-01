@@ -5,29 +5,39 @@ import { MemeImg } from "../MemeImg/MemeImg";
 import { FormGenerator } from "./FormGenerator/FormGenerator";
 import { MemeImages, MemeFonts } from "../../createContexts";
 import { useStyles } from "./styles";
+
+function getFontByFamily(font, fonts) {
+  let f = {};
+  fonts.forEach((ff) => {
+    f = ff.font === font ? ff : f;
+  });
+  return f;
+}
 /**
- * 
- * @param {*} props 
- * If receve: 
+ *
+ * @param {*} props
+ * If receve:
  * + {img}
  * + {copy}
  * + {diffUser}
- * + {privat}
+ * + {meme}
  * then a copy is performed
- * @returns 
+ * @returns
  */
 function Generator(props) {
-
   const fonts = useContext(MemeFonts);
   const imgs = useContext(MemeImages);
 
   const [title, setTitle] = useState("");
-  const [text1, setText1] = useState("");
-  const [text2, setText2] = useState("");
-  const [text3, setText3] = useState("");
-  const [color, setColor] = useState("#FFFFFF");
+  const [text1, setText1] = useState(props.meme ? props.meme.text1 : "");
+  const [text2, setText2] = useState(props.meme ? props.meme.text2 : "");
+  const [text3, setText3] = useState(props.meme ? props.meme.text3 : "");
+  const [color, setColor] = useState(props.meme ? props.meme.color : "#FFFFFF");
   const [img, setImg] = useState(props.img ? props.img : imgs[0]);
-  const [font, setFont] = useState(fonts[0]);
+  const [font, setFont] = useState(
+    props.meme ? getFontByFamily(props.meme.font, fonts) : fonts[0]
+  );
+  const privat = props.meme.privat === 0 ? "public" : "private";
 
   const classes = useStyles();
 
@@ -60,7 +70,13 @@ function Generator(props) {
   };
 
   return (
-    <Grid container direction="row" justify="space-around" alignItems="center" spacing={4}>
+    <Grid
+      container
+      direction="row"
+      justify="space-around"
+      alignItems="center"
+      spacing={4}
+    >
       <Grid item sm={6} lg={6} md={6}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>
@@ -85,7 +101,8 @@ function Generator(props) {
 
       <Grid item sm={6} lg={6} md={6}>
         <FormGenerator
-          imgs={img}
+          img={img}
+          imgs={imgs}
           color={color}
           font={font}
           fonts={fonts}
@@ -95,8 +112,9 @@ function Generator(props) {
           handleColor={handleColor}
           handleText={handleText}
           handleFont={handleFont}
-          privatBlock={(props.copy && props.diffUser) ? props.privat : undefined}
+          privatBlock={props.copy && props.diffUser ? privat : "public"}
           copy={props.copy}
+          addMeme={props.addMeme}
         />
       </Grid>
     </Grid>

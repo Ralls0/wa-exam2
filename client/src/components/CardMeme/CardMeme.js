@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  Avatar,
   IconButton,
   Typography,
   Grid,
@@ -13,6 +14,7 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import CallSplitSharpIcon from "@material-ui/icons/CallSplitSharp";
 import DeleteIcon from "@material-ui/icons/Delete";
+import WarningIcon from "@material-ui/icons/Warning";
 import { MemeImg } from "../MemeImg/MemeImg";
 import { MemeImages, UserInfoMode, LoggedInMode } from "../../createContexts";
 import { useStyles } from "./styles";
@@ -71,13 +73,24 @@ function InfoMeme(props) {
         </Typography>
       </Grid>
       <Grid item>
-        <IconButton
-          disabled={!owner}
-          className={classes.error}
-          onClick={handleDeleteClick}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <Grid container direction="row" justify="flex-end" alignItems="center">
+          {meme.status && (
+            <Grid item>
+              <Avatar alt={`Meme is ${meme.status}`}>
+                <WarningIcon />
+              </Avatar>
+            </Grid>
+          )}
+          <Grid item>
+            <IconButton
+              disabled={!owner}
+              className={classes.error}
+              onClick={handleDeleteClick}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid
         container
@@ -120,9 +133,9 @@ function InfoMeme(props) {
                 pathname: "/generator",
                 state: {
                   img: img,
-                  copy: true,
+                  copy: 1,
                   diffUser: !owner,
-                  privat: meme.privat,
+                  meme: meme,
                 },
               }}
             >
