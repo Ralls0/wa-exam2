@@ -38,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
   error: {
     color: "#E81f1f",
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+  },
 }));
 
 export { useStyles };

@@ -8,8 +8,6 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     fontFamily: "Impact",
-    textDecoration: "none",
-    flexGrow: 1,
     color: "#98CC6D",
   },
   link: {

@@ -129,6 +129,7 @@ function InfoMeme(props) {
             onClick={handleCopyClick}
           >
             <Link
+              className={classes.link}
               to={{
                 pathname: "/generator",
                 state: {

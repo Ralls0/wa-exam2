@@ -96,31 +96,24 @@ function FormGenerator(props) {
 
     let valid = true;
     if (title === "") {
-      console.log("Dentro Title");
       valid = false;
     }
     if (!text1 && !text2 && !text3) {
-      console.log("Dentro Texts", text1, text2, text3);
       valid = false;
     }
     if (!getListId(imgs).includes(img.id)) {
-      console.log("Dentro img", img);
       valid = false;
     }
     if (!userInfo.id) {
-      console.log("Dentro UserInfo", userInfo);
       valid = false;
     }
     if (copy !== 0 && copy !== 1) {
-      console.log("Dentro Copy", copy);
       valid = false;
     }
     if (!getListId(fonts).includes(font.id)) {
-      console.log("Dentro fonts", font, "GetListId: ", getListId(fonts));
       valid = false;
     }
     if (color === "" || color.length !== 7) {
-      console.log("Dentro Color: ", color);
       valid = false;
     }
 

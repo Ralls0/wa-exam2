@@ -2,6 +2,8 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Route, Switch, Redirect } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import API from "./API";
@@ -47,6 +49,7 @@ function App() {
   const [memes, setMemes] = useState([]);
   const [imgs, setImgs] = useState([]);
   const [menu, setMenu] = useState("/");
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -117,6 +120,18 @@ function App() {
       });
   }, [loggedIn, dirty]);
 
+  const handleSnackbarsClick = () => {
+    setOpen(true);
+  };
+
+  const handleSnackbarsClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const handleMenu = (path) => {
     setMenu(path);
   };
@@ -128,6 +143,7 @@ function App() {
         type: "danger",
       });
     else setMessage({ msg: err.error, type: "danger" });
+    handleSnackbarsClick()
 
     setDirty(true);
   };
@@ -138,33 +154,35 @@ function App() {
 
   const selectImg = (imgId) => {
     if (imgs.length > 0) {
-      return (imgs.filter((image) => {
+      return imgs.filter((image) => {
         return image.id === imgId;
-      })[0]
-      );
-  }
-  return -1;
-}
+      })[0];
+    }
+    return -1;
+  };
 
-const getLastMemeId = () => {
-  let max = -1;
-  memes.forEach(m => {
-    max = Math.max(max, m.id);
-  })
-  return max;
-}
+  const getLastMemeId = () => {
+    let max = -1;
+    memes.forEach((m) => {
+      max = Math.max(max, m.id);
+    });
+    return max;
+  };
 
-const addMeme = (meme) => {
-  meme.id = getLastMemeId() + 1;
-  meme.status = 'added';
-  setMemes(oldMemes => [...oldMemes, meme]);
+  const addMeme = (meme) => {
+    meme.id = getLastMemeId() + 1;
+    meme.status = "added";
+    setMemes((oldMemes) => [...oldMemes, meme]);
 
-  API.addMeme(meme)
-    .then(() => {
-      setMenu("/");
-      setDirty(true);
-    }).catch(err => handleErrors(err) );
-}
+    API.addMeme(meme)
+      .then(() => {
+        setMenu("/");
+        setMessage({ msg: `Meme ${meme.title} added`, type: "success" })
+        handleSnackbarsClick()
+        setDirty(true);
+      })
+      .catch((err) => handleErrors(err));
+  };
 
   const deleteMeme = (memeId) => {
     setMemes((oldMemes) => {
@@ -177,6 +195,8 @@ const addMeme = (meme) => {
     API.deleteMeme(memeId)
       .then(() => {
         setDirty(true);
+        setMessage({ msg: `Meme deleted`, type: "success" })
+        handleSnackbarsClick()
       })
       .catch((err) => handleErrors(err));
   };
@@ -187,7 +207,8 @@ const addMeme = (meme) => {
       setUserInfo(user);
       setLoggedIn(true);
       setMenu("/");
-      setMessage({ msg: `Welcome, ${user}!`, type: "success" });
+      setMessage({ msg: `Welcome, ${user.name}!`, type: "success" });
+      handleSnackbarsClick()
       setDirty(true);
     } catch (err) {
       throw err;
@@ -213,6 +234,16 @@ const addMeme = (meme) => {
               menu={menu}
               handleMenu={handleMenu}
             />
+            <Snackbar
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleSnackbarsClose}
+            >
+              <MuiAlert onClose={handleSnackbarsClose} severity={message.type}>
+              {message.msg}
+              </MuiAlert>
+            </Snackbar>
             <MemeImages.Provider value={imgs}>
               <MemeFonts.Provider value={fonts}>
                 <Switch>
@@ -230,16 +261,14 @@ const addMeme = (meme) => {
                       if (location.state) {
                         location.state.img = selectImg(location.state.img);
                       }
-                        return loggedIn ? (
+                      return loggedIn ? (
                         <Generator
                           img={location.state ? location.state.img : false}
                           copy={location.state ? location.state.copy : 0}
                           diffUser={
                             location.state ? location.state.diffUser : false
                           }
-                          meme={
-                            location.state ? location.state.meme : false
-                          }
+                          meme={location.state ? location.state.meme : false}
                           addMeme={addMeme}
                         />
                       ) : (

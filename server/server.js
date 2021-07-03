@@ -56,7 +56,7 @@ const isLoggedIn = (req, res, next) => {
 /*** set up the session ***/
 app.use(
   session({
-    secret: "NODEscriptionGroup281564",
+    secret: "NODEscriptionGroup281564Rallso",
     resave: false,
     saveUninitialized: false,
   })

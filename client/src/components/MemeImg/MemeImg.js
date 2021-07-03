@@ -54,13 +54,13 @@ function RowTypography(props) {
   return (
     <>
       <tr className={classes.row}>
-        <td align="center" className={classes.textSide}>
+        <td align="right" className={classes.textSide}>
           {props.texts[0]}
         </td>
         <td align="center" className={classes.text}>
           {props.texts[1]}
         </td>
-        <td align="center" className={classes.textSide}>
+        <td align="left" className={classes.textSide}>
           {props.texts[2]}
         </td>
       </tr>
