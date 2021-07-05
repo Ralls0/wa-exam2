@@ -1,3 +1,21 @@
+@font-face {font-family: "Comic Sans MS";
+  src: url("./assets/fonts/7cc6719bd5f0310be3150ba33418e72e.eot"); /* IE9*/
+  src: url("./assets/fonts/7cc6719bd5f0310be3150ba33418e72e.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("./assets/fonts/7cc6719bd5f0310be3150ba33418e72e.woff2") format("woff2"), /* chrome、firefox */
+  url("./assets/fonts/7cc6719bd5f0310be3150ba33418e72e.woff") format("woff"), /* chrome、firefox */
+  url("./assets/fonts/7cc6719bd5f0310be3150ba33418e72e.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url("./assets/fonts/7cc6719bd5f0310be3150ba33418e72e.svg#Comic Sans MS") format("svg"); /* iOS 4.1- */
+}
+
+@font-face {font-family: "Impact Label V1";
+  src: url("./assets/fonts/22c0773034e47529f44c9548705b1ae8.eot"); /* IE9*/
+  src: url("./assets/fonts/22c0773034e47529f44c9548705b1ae8.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("./assets/fonts/22c0773034e47529f44c9548705b1ae8.woff2") format("woff2"), /* chrome、firefox */
+  url("./assets/fonts/22c0773034e47529f44c9548705b1ae8.woff") format("woff"), /* chrome、firefox */
+  url("./assets/fonts/22c0773034e47529f44c9548705b1ae8.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url("./assets/fonts/22c0773034e47529f44c9548705b1ae8.svg#Impact Label V1") format("svg"); /* iOS 4.1- */
+}
+
 html,
 body{
   background-color: #2C223F;
