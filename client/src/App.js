@@ -79,7 +79,7 @@ function App() {
     getAllFonts().catch((err) => {
       setMessage({
         msg: "Impossible to load fonts! Please, try again later...",
-        type: "danger",
+        type: "error",
       });
       handleErrors(err);
       console.error(err);
@@ -88,7 +88,7 @@ function App() {
     getAllImg().catch((err) => {
       setMessage({
         msg: "Impossible to load imgs! Please, try again later...",
-        type: "danger",
+        type: "error",
       });
       handleErrors(err);
       console.error(err);
@@ -113,7 +113,7 @@ function App() {
       .catch((err) => {
         setMessage({
           msg: "Impossible to load memes! Please, try again later...",
-          type: "danger",
+          type: "error",
         });
         handleErrors(err);
         console.error(err);
@@ -140,10 +140,10 @@ function App() {
     if (err.errors)
       setMessage({
         msg: err.errors[0].msg + ": " + err.errors[0].param,
-        type: "danger",
+        type: "error",
       });
-    else setMessage({ msg: err.error, type: "danger" });
-    handleSnackbarsClick()
+    else setMessage({ msg: err.error, type: "error" });
+    handleSnackbarsClick();
 
     setDirty(true);
   };
@@ -177,8 +177,8 @@ function App() {
     API.addMeme(meme)
       .then(() => {
         setMenu("/");
-        setMessage({ msg: `Meme ${meme.title} added`, type: "success" })
-        handleSnackbarsClick()
+        setMessage({ msg: `Meme ${meme.title} added`, type: "success" });
+        handleSnackbarsClick();
         setDirty(true);
       })
       .catch((err) => handleErrors(err));
@@ -195,8 +195,8 @@ function App() {
     API.deleteMeme(memeId)
       .then(() => {
         setDirty(true);
-        setMessage({ msg: `Meme deleted`, type: "success" })
-        handleSnackbarsClick()
+        setMessage({ msg: `Meme deleted`, type: "success" });
+        handleSnackbarsClick();
       })
       .catch((err) => handleErrors(err));
   };
@@ -208,7 +208,7 @@ function App() {
       setLoggedIn(true);
       setMenu("/");
       setMessage({ msg: `Welcome, ${user.name}!`, type: "success" });
-      handleSnackbarsClick()
+      handleSnackbarsClick();
       setDirty(true);
     } catch (err) {
       throw err;
@@ -235,13 +235,13 @@ function App() {
               handleMenu={handleMenu}
             />
             <Snackbar
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               open={open}
               autoHideDuration={6000}
               onClose={handleSnackbarsClose}
             >
               <MuiAlert onClose={handleSnackbarsClose} severity={message.type}>
-              {message.msg}
+                {message.msg}
               </MuiAlert>
             </Snackbar>
             <MemeImages.Provider value={imgs}>

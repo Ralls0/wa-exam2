@@ -2,7 +2,6 @@ import React from "react";
 import { useStyles } from "./styles";
 
 function MemeImg(props) {
-
   const { img, meme } = props;
 
   const text = [meme.text1, meme.text2, meme.text3];

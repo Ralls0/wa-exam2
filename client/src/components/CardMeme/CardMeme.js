@@ -19,6 +19,24 @@ import { MemeImg } from "../MemeImg/MemeImg";
 import { MemeImages, UserInfoMode, LoggedInMode } from "../../createContexts";
 import { useStyles } from "./styles";
 
+const loaderVariants = {
+  animationOne: {
+    x: [-20, 20],
+    y: [0, -30],
+    transition: {
+      x: {
+        yoyo: Infinity,
+        duration: 0.5,
+      },
+      y: {
+        yoyo: Infinity,
+        duration: 0.25,
+        ease: "easeOut",
+      },
+    },
+  },
+};
+
 function CardMeme(props) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,9 +46,11 @@ function CardMeme(props) {
 
   return (
     <motion.div
-    whileHover={{
-      scale: 1.05
-    }}>
+      whileHover={{
+        scale: [1, 1, 0.95, 0.95, 0.95, 1, 1],
+        rotate: [0, 0, 1, -1, 1, 0, 0],
+      }}
+    >
       <Card onClick={toggleOpen} className={classes.cardMemeContainer}>
         <CardContent>
           <InfoMeme
@@ -156,6 +176,7 @@ function InfoMeme(props) {
 
 function Content(props) {
   const [img, setImg] = useState("");
+  const [loading, setLoading] = useState(true);
   const imgs = useContext(MemeImages);
 
   useEffect(() => {
@@ -164,6 +185,7 @@ function Content(props) {
         return image.id === props.img;
       })[0];
       setImg(i);
+      setLoading(false);
     }
   }, [imgs, props.img, props.meme.userID]);
 
@@ -173,8 +195,25 @@ function Content(props) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <MemeImg img={img} meme={props.meme} />
+      {loading ? (
+        <>
+          <Loader />
+        </>
+      ) : (
+        <MemeImg img={img} meme={props.meme} />
+      )}
     </motion.div>
+  );
+}
+
+function Loader() {
+  const classes = useStyles();
+  return (
+    <motion.div
+      className={classes.loader}
+      variants={loaderVariants}
+      animation="animationOne"
+    ></motion.div>
   );
 }
 

@@ -42,6 +42,13 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "inherit",
   },
+  loader: {
+    width: "10px",
+    height: "10px",
+    margin: "40px auto",
+    borderRadius: "50%",
+    backgroundColor: "#D153FF",
+  }
 }));
 
 export { useStyles };

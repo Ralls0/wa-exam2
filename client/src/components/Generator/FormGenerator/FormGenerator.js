@@ -54,7 +54,7 @@ function FormGenerator(props) {
     handleText("", "text2");
     handleText("", "text3");
     }
-  }, [img]);
+  }, [img, copy]);
 
   const handlePrivat = (event) => {
     setPrivat(event.target.value);
