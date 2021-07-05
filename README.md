@@ -44,7 +44,7 @@
   - Response: 200 OK (success) or 401 Error (with info).
   - Response body: User info or error info.
 - POST `/api/memes`
-  - Request body: A JSON that contains a meme object made up as follow:  { title, text1, text2, text3, img, privat, user, copy, font, color }.
+  - Request body: A JSON that contains a meme object made up as follow:  { title, text1, text2, text3, img, privat, user, copy, font, color, cUser,  privatBlock}.
   - Require to be logged in, namely a session should be set up.
   - Response: 201 OK (success) or 503 Internal Server Error (database error).
   - Response body: None.

@@ -114,6 +114,7 @@ function Generator(props) {
           handleFont={handleFont}
           privatBlock={props.copy && props.diffUser ? privat : "public"}
           copy={props.copy}
+          cUser={props.meme ? props.meme.userID : ""}
           addMeme={props.addMeme}
         />
       </Grid>

@@ -83,6 +83,8 @@ function addMeme(meme) {
         copy: meme.copy,
         font: meme.fontID,
         color: meme.color,
+        cUser: meme.cUser,
+        privatBlock: meme.privatBlock,
       }),
     })
       .then((response) => {

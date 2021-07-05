@@ -25,6 +25,7 @@ function FormGenerator(props) {
     handleFont,
     privatBlock,
     copy,
+    cUser,
     addMeme,
   } = props;
   const [errorMessage, setErrorMessage] = useState("");
@@ -110,6 +111,9 @@ function FormGenerator(props) {
     if (copy !== 0 && copy !== 1) {
       valid = false;
     }
+    if (copy === 1 && !cUser) {
+      valid = false;
+    }
     if (!getListId(fonts).includes(font.id)) {
       valid = false;
     }
@@ -118,7 +122,7 @@ function FormGenerator(props) {
     }
 
     if (valid) {
-      addMeme(newMeme);
+      addMeme(newMeme, cUser, privatBlock);
       setSubmitted(true);
     } else {
       setErrorMessage("Error(s) in the form, please fix it.");

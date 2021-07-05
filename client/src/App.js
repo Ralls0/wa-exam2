@@ -169,12 +169,12 @@ function App() {
     return max;
   };
 
-  const addMeme = (meme) => {
+  const addMeme = (meme, cUser, privatBlock) => {
     meme.id = getLastMemeId() + 1;
     meme.status = "added";
     setMemes((oldMemes) => [...oldMemes, meme]);
 
-    API.addMeme(meme)
+    API.addMeme({...meme, cUser: cUser, privatBlock: privatBlock})
       .then(() => {
         setMenu("/");
         setMessage({ msg: `Meme ${meme.title} added`, type: "success" });

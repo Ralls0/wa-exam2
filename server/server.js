@@ -52,6 +52,25 @@ const isLoggedIn = (req, res, next) => {
 
   return res.status(401).json({ error: "not authenticated" });
 };
+/*** custom middleware for checking copy ***/
+const validateCopy = (req, res, next) => {
+  if (
+    req.body.copy === 0 ||
+    req.body.cUser === req.body.userID ||
+    req.body.privatBlock === "public" ||
+    req.body.privat === 1
+  )
+    return next();
+
+  return res.status(400).json({ error: "Copy not valid" });
+};
+
+/*** custom middleware for checking texts ***/
+const validateTexts = (req, res, next) => {
+  if (req.body.text1 || req.body.text2 || req.body.text3) return next();
+
+  return res.status(400).json({ error: "At least one text must be not null" });
+};
 
 /*** set up the session ***/
 app.use(
@@ -92,7 +111,7 @@ app.get("/api/imgs/:id", async (req, res) => {
   try {
     const img = await memeDao.getImage(req.params.id);
     if (img.error) res.status(404).json(result);
-    else res.sendFile(`./${img.path}`, {root: __dirname});
+    else res.sendFile(`./${img.path}`, { root: __dirname });
   } catch (err) {
     res.status(500).end();
   }
@@ -130,35 +149,50 @@ app.get("/api/fonts", async (req, res) => {
 });
 
 // POST /api/memes
-app.post('/api/memes', isLoggedIn, [
-  check('title').notEmpty().isString(),
-  check('user').isInt(),
-  check('copy').isInt({min: 0, max: 1}),
-  check('font').isInt(),
-  check('color').notEmpty().isString().isLength({min: 7, max: 7}),
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({errors: errors.array()});
-  }
+app.post(
+  "/api/memes",
+  isLoggedIn,
+  validateCopy,
+  validateTexts,
+  [
+    check("title").notEmpty().isString(),
+    check("user").isInt(),
+    check("copy").isInt({ min: 0, max: 1 }),
+    check("font").isInt(),
+    check("color").notEmpty().isString().isLength({ min: 7, max: 7 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
 
-  const meme = req.body;
+    const meme = req.body;
 
-  try {
-    await memeDao.createMeme(meme);
-    res.status(201).end();
-  } catch(err) {
-    res.status(503).json({error: `Database error during the creation of meme ${meme.title}.`});
+    try {
+      await memeDao.createMeme(meme);
+      res.status(201).end();
+    } catch (err) {
+      res
+        .status(503)
+        .json({
+          error: `Database error during the creation of meme ${meme.title}.`,
+        });
+    }
   }
-});
+);
 
 // DELETE /api/memes/<id>
-app.delete('/api/memes/:id', isLoggedIn, async (req, res) => {
+app.delete("/api/memes/:id", isLoggedIn, async (req, res) => {
   try {
     await memeDao.deleteMeme(req.params.id, req.user.id);
     res.status(204).end();
-  } catch(err) {
-    res.status(503).json({ error: `Database error during the deletion of meme ${req.params.id}.`});
+  } catch (err) {
+    res
+      .status(503)
+      .json({
+        error: `Database error during the deletion of meme ${req.params.id}.`,
+      });
   }
 });
 
