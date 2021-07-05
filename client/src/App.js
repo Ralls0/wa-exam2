@@ -36,7 +36,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: "Impact, Comic Sans MS, Arial",
+    fontFamily: "Impact, Anton, Comic Sans MS, Arial",
   },
 });
 
