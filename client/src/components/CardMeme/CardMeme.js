@@ -27,19 +27,24 @@ function CardMeme(props) {
   const toggleOpen = () => setIsOpen((oldIsOpen) => !oldIsOpen);
 
   return (
-    <Card onClick={toggleOpen} className={classes.cardMemeContainer}>
-      <CardContent>
-        <InfoMeme
-          img={props.img}
-          meme={props.meme}
-          deleteMeme={props.deleteMeme}
-          copyMeme={props.copyMeme}
-        />
-        <AnimatePresence>
-          {isOpen && <Content img={props.img} meme={props.meme} />}
-        </AnimatePresence>
-      </CardContent>
-    </Card>
+    <motion.div
+    whileHover={{
+      scale: 1.05
+    }}>
+      <Card onClick={toggleOpen} className={classes.cardMemeContainer}>
+        <CardContent>
+          <InfoMeme
+            img={props.img}
+            meme={props.meme}
+            deleteMeme={props.deleteMeme}
+            copyMeme={props.copyMeme}
+          />
+          <AnimatePresence>
+            {isOpen && <Content img={props.img} meme={props.meme} />}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 
