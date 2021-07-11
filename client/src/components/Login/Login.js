@@ -75,7 +75,6 @@ function LoginForm(props) {
           {errorMessage ? (
             <Collapse in={open}>
               <Alert
-                error
                 variant="outlined"
                 severity="error"
                 action={
