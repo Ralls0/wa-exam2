@@ -16,7 +16,6 @@
       br,
     ) {
       this.id = id;
-      this.code = id;
       this.img = img;
       this.tl = tl;
       this.tc = tc;
@@ -37,7 +36,7 @@
      */
     static from(json) {
       const img = new Img();
-      delete Object.assign(img, json, { code: json.id }).code;
+      Object.assign(img, json);
       return img;
     }
   }

@@ -18,7 +18,6 @@ class Meme {
     color
   ) {
     this.id = id;
-    this.code = id;
     this.title = title;
     this.text1 = text1;
     this.text2 = text2;
@@ -41,7 +40,7 @@ class Meme {
    */
   static from(json) {
     const meme = new Meme();
-    delete Object.assign(meme, json, { code: json.id }).code;
+    Object.assign(meme, json);
     return meme;
   }
 }

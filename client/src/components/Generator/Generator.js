@@ -29,10 +29,18 @@ function Generator(props) {
   const imgs = useContext(MemeImages);
 
   const [title, setTitle] = useState("");
-  const [text1, setText1] = useState(props.meme ? props.meme.text1 : "");
-  const [text2, setText2] = useState(props.meme ? props.meme.text2 : "");
-  const [text3, setText3] = useState(props.meme ? props.meme.text3 : "");
-  const [color, setColor] = useState(props.meme ? props.meme.color : "#FFFFFF");
+  const [text1, setText1] = useState(
+    props.meme && props.meme.text1 ? props.meme.text1 : ""
+  );
+  const [text2, setText2] = useState(
+    props.meme && props.meme.text2 ? props.meme.text2 : ""
+  );
+  const [text3, setText3] = useState(
+    props.meme && props.meme.text3 ? props.meme.text3 : ""
+  );
+  const [color, setColor] = useState(
+    props.meme && props.meme.color ? props.meme.color : "#FFFFFF"
+  );
   const [img, setImg] = useState(props.img ? props.img : imgs[0]);
   const [font, setFont] = useState(
     props.meme ? getFontByFamily(props.meme.font, fonts) : fonts[0]

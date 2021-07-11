@@ -5,40 +5,19 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
 import API from "./API";
 import NavigationBar from "./components/NavBar/Navbar";
 import { Login } from "./components/Login/Login";
 import { Generator } from "./components/Generator/Generator";
 import { NotFound } from "./components/NotFound/NotFound";
 import { MainContent } from "./components/MainContent/MainContent";
+import { theme } from "./styles";
 import {
   LoggedInMode,
   UserInfoMode,
   MemeImages,
   MemeFonts,
 } from "./createContexts";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#D153FF",
-    },
-    secondary: {
-      main: "#98CC6D",
-      dark: "#6F9D58",
-    },
-    error: {
-      main: "#E81f1f",
-    },
-    info: {
-      main: "#0BCBFF",
-    },
-  },
-  typography: {
-    fontFamily: "Impact, Anton, Comic Sans MS, Arial",
-  },
-});
 
 function App() {
   const [dirty, setDirty] = useState(true);
